@@ -13,10 +13,6 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-    defaults:
-      run:
-        working-directory: my-app
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,15 +22,20 @@ jobs:
         with:
           node-version: 22
           cache: "npm"
+          cache-dependency-path: my-app/package-lock.json
 
       - name: Install dependencies
+        working-directory: my-app
         run: npm install
 
       - name: Generate Prisma client
+        working-directory: my-app
         run: npx prisma generate
 
       - name: Type check
+        working-directory: my-app
         run: npx tsc --noEmit
 
       - name: Build Next.js app
+        working-directory: my-app
         run: npm run build
