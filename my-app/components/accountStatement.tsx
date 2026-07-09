@@ -1,19 +1,31 @@
-export default function AccountStatement() {
+import { getUsers } from "@/components/user";
+import { getTransaction } from "@/components/transaction";
+
+export default async function AccountStatement() {
+  const transactions = await getTransaction();
+  
+
   return (
     <>
-      <div className="flex justify-between border mt-2 p-5">
-        <div className="flex gap-2">
-          <div>Logo</div>
-          <div className="flex flex-col">
-            <div>Monthly Salary</div>
-            <div><span>Jun 1</span> <span>Income</span></div>
+      {transactions.map((value) => {
+        return (
+          <div key={value.id} className="flex justify-between border mt-2 p-5">
+            <div className="flex gap-2">
+              <div>Logo</div>
+              <div className="flex flex-col">
+                <div>{value.description}</div>
+                <div><span>{value.category}</span> <span>Jun 1</span></div>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div>+${value.amount}</div>
+              <div>Income</div>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col">
-          <div>+$3434</div>
-          <div>Income</div>
-        </div>
-      </div>
+        )
+      }
+      )
+      }
     </>
   )
 }

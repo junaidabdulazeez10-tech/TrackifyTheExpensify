@@ -1,6 +1,9 @@
 import AccountStatement from "@/components/accountStatement";
 
+
 export default function Transactions() {
+
+  
   return (
     <div className="p-5">
       <div className="flex justify-between gap-5">
