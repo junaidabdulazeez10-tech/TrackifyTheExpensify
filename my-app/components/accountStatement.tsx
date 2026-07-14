@@ -1,9 +1,8 @@
-import { getUsers } from "@/components/user";
-import { getTransaction } from "@/components/transaction";
+import { getUsers } from "@/serverActions/user";
+import { getTransaction } from "@/serverActions/transaction";
 
 export default async function AccountStatement() {
   const transactions = await getTransaction();
-  
 
   return (
     <>
@@ -19,13 +18,11 @@ export default async function AccountStatement() {
             </div>
             <div className="flex flex-col">
               <div>+${value.amount}</div>
-              <div>Income</div>
+              <div>{value.status}</div>
             </div>
           </div>
         )
-      }
-      )
-      }
+      })}
     </>
   )
 }

@@ -21,3 +21,4 @@ export async function createTransaction(createTransactionProps: CreateTransactio
 export async function getTransaction() {
   return await prisma.transaction.findMany()
 }
+
