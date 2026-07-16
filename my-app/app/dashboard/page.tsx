@@ -1,6 +1,8 @@
 import AccountStatement from "@/components/accountStatement";
+import { getTransaction } from "@/serverActions/transaction";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+   const transactions = await getTransaction();
   return (
     <div className="mr-5 ml-5">
       <div className="flex justify-between gap-10">
@@ -37,7 +39,7 @@ export default function Dashboard() {
       </div>
       <div className="border mt-10 p-5">
         <div>Recent Transactions</div>
-        <AccountStatement />
+        <AccountStatement transactions={transactions} />
       </div>
     </div>
   )

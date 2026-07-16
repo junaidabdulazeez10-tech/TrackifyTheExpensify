@@ -1,8 +1,9 @@
 import AccountStatement from "@/components/accountStatement";
+import { getTransaction } from "@/serverActions/transaction";
 
 
-export default function Transactions() {
-
+export default async function Transactions() {
+const transactions = await getTransaction();
   
   return (
     <div className="p-5">
@@ -23,7 +24,7 @@ export default function Transactions() {
       </div>
       <div className="border mt-5 p-5">
         <div>Transactions: </div>
-        <AccountStatement />
+        <AccountStatement transactions={transactions} />
       </div>
     </div>
   )
