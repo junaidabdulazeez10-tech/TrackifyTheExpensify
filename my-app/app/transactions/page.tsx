@@ -1,31 +1,27 @@
 import AccountStatement from "@/components/accountStatement";
+import TransactionFilter from "@/components/TransactionFilter";
 import { getTransaction } from "@/serverActions/transaction";
 
 
 export default async function Transactions() {
-const transactions = await getTransaction();
-  
+
+  const transactions = await getTransaction();
+
+  const totalOut = transactions.filter((value) => value.status === "Expense").reduce((sum, value) => sum + value.amount, 0);
+  const totalIn = transactions.filter((value) => value.status === "Income").reduce((sum, value) => sum + value.amount, 0);
   return (
     <div className="p-5">
       <div className="flex justify-between gap-5">
         <div className=" border w-full p-5">
           <div>Total In</div>
-          <div>+$232</div>
+          <div>+${totalIn}</div>
         </div>
         <div className=" border w-full p-5">
-          <div>Total In</div>
-          <div>+$232</div>
+          <div>Total Out</div>
+          <div>-${totalOut}</div>
         </div>
       </div>
-      <div className="flex gap-4 mt-5">
-        <button className="border p-3">All</button>
-        <button className="border p-3">Income</button>
-        <button className="border p-3">Expense</button>
-      </div>
-      <div className="border mt-5 p-5">
-        <div>Transactions: </div>
-        <AccountStatement transactions={transactions} />
-      </div>
+      <TransactionFilter transactions={transactions} />
     </div>
   )
 }

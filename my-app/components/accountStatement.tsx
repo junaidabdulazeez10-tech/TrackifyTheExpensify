@@ -15,7 +15,6 @@ type TransactionsProp = {
 
 const categoryIcons = {
   Income: TrendingUp,
-  Expense: TrendingDown,
   Housing: House,
   Food: Utensils,
   Transportation: Car,
@@ -37,7 +36,7 @@ export default function AccountStatement({transactions} : TransactionsProp) {
               <Icon />
               <div className="flex flex-col">
                 <div>{value.description}</div>
-                <div><span>{value.category}</span> <span>Jun 1</span></div>
+                <div><span>{value.category}</span> · <span>Jun 1</span></div>
               </div>
             </div>
             <div className="flex flex-col">
