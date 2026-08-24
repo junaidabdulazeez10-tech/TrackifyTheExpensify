@@ -1,11 +1,13 @@
 import AccountStatement from "@/components/accountStatement";
 import { getTransaction } from "@/serverActions/transaction";
+import {BarsChart, PiesChart} from "@/components/charts";
 
 export default async function Dashboard() {
    const transactions = await getTransaction();
    const income = transactions.filter((value) => value.status === "Income").reduce((sum, value) => sum + value.amount, 0)
    const expense = transactions.filter((value) => value.status === "Expense").reduce((sum, v) => sum + v.amount, 0)
    const balance = income - expense;
+  
   return (
     <div className="mr-5 ml-5">
       <div className="flex justify-between gap-10">
@@ -33,11 +35,11 @@ export default async function Dashboard() {
       <div className="flex justify-between gap-10 mt-6">
         <div className="border w-full p-5 ">
           <p>Income vs Expenses</p>
-          <div>chart</div>
+          <div><BarsChart transactions={transactions} /></div>
         </div>
         <div className="border w-full p-5 ">
           <p>By Catergory</p>
-          <div>chart</div>
+          <div><PiesChart transactions={transactions}  /></div>
         </div>
       </div>
       <div className="border mt-10 p-5">
