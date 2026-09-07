@@ -13,7 +13,7 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
   const [description, setDescription] = useState("")
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
       <form className="w-[320px] p-8 rounded-2xl 
               bg-white/10 backdrop-blur-xl 
               border border-white/20 
@@ -22,14 +22,14 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           Add Transaction
         </h1>
         <div className="flex justify-center gap-8">
-          <button type="button" className={`p-3 rounded-lg ${status === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}`} onClick={(e) => { setStatus("Income") }}>Income</button>
-          <button type="button" className={`p-3 rounded-lg ${status === "Expense" ? "bg-green-500 text-white" : "bg-white/20 text-white"}`} onClick={(e) => { setStatus("Expense") }}>Expense</button>
+          <button type="button" className={`p-3 rounded-lg ${status === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setStatus("Income") }}>Income</button>
+          <button type="button" className={`p-3 rounded-lg ${status === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setStatus("Expense") }}>Expense</button>
         </div> 
-        <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white" />
-        <select className="p-3 rounded-lg bg-white/20 text-white" value={category} onChange={(e) => setCategory(e.target.value)}>
+        <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
+        <select className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="">Select Category</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Income">Income</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Expense">Expense</option>
+          <option className="p-3 rounded-lg bg-black/70 text-white" value="Food">Food</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Housing">Housing</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Shopping">Shopping</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Transportation">Transportation</option>
@@ -37,11 +37,13 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Utilities">Utilities</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Others">Others</option>
         </select>
-        <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white" />
-        <button type="button" onClick={async () => { await createTransaction({ amount: Number(amount), category, description, status }), setOpen(false) }} className="p-3 rounded-lg bg-green-500 text-white">
+        <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
+        <button type="button" onClick={async () => { await createTransaction({ amount: Number(amount), category, description, status }), setOpen(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
           Send
         </button>
-        <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-red-500 text-white">Close</button>
+        <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">
+          Close
+        </button>
       </form>
     </div>
   )

@@ -1,5 +1,5 @@
 "use client"
-import { Film, House, TrendingDown, TrendingUp, Utensils, Car, Lightbulb, CircleEllipsis, ShoppingBag } from "lucide-react";
+import { Film, House, TrendingUp, Utensils, Car, Lightbulb, CircleEllipsis, ShoppingBag } from "lucide-react";
 
 type Transaction = {
   id: string;
@@ -7,6 +7,7 @@ type Transaction = {
   category: string;
   description: string;
   status: string;
+  createdAt: string
 }
 
 type TransactionsProp = {
@@ -24,7 +25,7 @@ const categoryIcons = {
   Others: CircleEllipsis
 }
 
-export default function AccountStatement({transactions} : TransactionsProp) {
+export default function AccountStatement({ transactions }: TransactionsProp) {
 
   return (
     <>
@@ -36,11 +37,17 @@ export default function AccountStatement({transactions} : TransactionsProp) {
               <Icon />
               <div className="flex flex-col">
                 <div>{value.description}</div>
-                <div><span>{value.category}</span> · <span>Jun 1</span></div>
+                <div>
+                  <span>{value.category}</span> · <span>{new Date(value.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                  </span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col">
-              {value.status === "Income" ? <div>+${value.amount}</div> : <div>-${value.amount}</div> }
+              {value.status === "Income" ? <div>+${value.amount}</div> : <div>-${value.amount}</div>}
               <div>{value.status}</div>
             </div>
           </div>
