@@ -32,14 +32,14 @@ export default async function Dashboard() {
           <p>this month</p>
         </div>
       </div>
-      <div className="flex justify-between gap-10 mt-6">
-        <div className="border w-full p-5 ">
+      <div className="flex gap-10 mt-6">
+        <div className="border flex-2 p-5 ">
           <p>Income vs Expenses</p>
-          <div><BarsChart transactions={transactions} /></div>
+          <div className="flex justify-center"><BarsChart transactions={transactions} /></div>
         </div>
-        <div className="border w-full p-5 ">
+        <div className="border flex-1 p-5  ">
           <p>By Catergory</p>
-          <div><PiesChart transactions={transactions}  /></div>
+          <div className="flex justify-center"><PiesChart transactions={transactions}  /></div>
         </div>
       </div>
       <div className="border mt-10 p-5">

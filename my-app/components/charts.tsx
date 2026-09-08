@@ -26,32 +26,39 @@ type TransactionsProp = {
 }
 
 export function BarsChart(transactions: TransactionsProp) {
-  const data = [
-    categoryAmount("Shopping"),
-    categoryAmount("Others"),
-    categoryAmount("Transportation"),
-    categoryAmount("Entertainment"),
-    categoryAmount("Housing"),
-    categoryAmount("Utilities"),
-    categoryAmount("Food"),
-  ]
 
-  function categoryAmount(category: string) {
-    const data = transactions.transactions.filter((v: Transaction) => v.category === category).reduce((sum, v) => sum + v.amount, 0)
-    return {
-      category,
-      amount: data
-    }
+  const data = categoryAmount()
+
+  function categoryAmount() {
+    const map = new Map()
+
+    transactions.transactions.forEach((v: Transaction) => {
+      let month = v.createdAt.toLocaleDateString("en-Us", { month: "short" })
+      if (map.has(month)) {
+        const existing = map.get(month)
+        if (v.status === "Income") {
+          map.set(month, { ...existing, income: existing.income + v.amount })
+        } else {
+          map.set(month, { ...existing, expense: existing.expense + v.amount })
+        }
+      } else {
+        map.set(month, { month, income: v.status === "Income" ? v.amount : 0, expense: v.status === "Expense" ? v.amount : 0 })
+      }
+    })
+
+    return Array.from(map.values())
   }
 
 
+
   return (
-    <BarChart width={700} height={300} data={data}>
+    <BarChart width={1000} height={400} data={data}>
       <CartesianGrid />
-      <XAxis dataKey="category" />
+      <XAxis dataKey="month" />
       <YAxis />
       <Tooltip />
-      <Bar dataKey="amount" fill="#00ffb3" />
+      <Bar dataKey="income" fill="#00ffb3"  barSize={50} />
+      <Bar dataKey="expense" fill="#ff036c"  barSize={50} />
     </BarChart>
   )
 }
@@ -89,7 +96,8 @@ export function PiesChart(transactions: TransactionsProp) {
   return (
     <PieChart width={500} height={300} >
       <Tooltip />
-      <Pie data={data} dataKey="amount" nameKey="category" shape={CustomPieShape} />
+      <Pie data={data} dataKey="amount" nameKey="category" innerRadius={60}
+        outerRadius={100} shape={CustomPieShape} />
       <Legend />
     </PieChart>
   )
