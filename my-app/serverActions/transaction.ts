@@ -19,5 +19,11 @@ export async function createTransaction(createTransactionProps: CreateTransactio
 }
 
 export async function getTransaction() {
-  return await prisma.transaction.findMany()
+  return (await prisma.transaction.findMany(
+    {
+      orderBy: {
+        createdAt: "desc"
+      }
+    }
+  ))
 }

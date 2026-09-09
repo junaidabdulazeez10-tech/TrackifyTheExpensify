@@ -28,6 +28,7 @@ const categoryIcons = {
 
 export default function AccountStatement({ transactions }: TransactionsProp) {
 
+
   return (
     <>
       {transactions.map((value) => {

@@ -3,12 +3,12 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Pie
 
 const COLORS = [
   "#00ffb3",
-  "#ff6384",
-  "#36a2eb",
-  "#ffce56",
-  "#9966ff",
-  "#ff9f40",
-  "#4bc0c0",
+  "#d400ff",
+  "#0051ff",
+  "#fffb00",
+  "#ff036c",
+  "#ff6600",
+  "#00c43b",
 ];
 
 type Transaction = {
@@ -56,9 +56,13 @@ export function BarsChart(transactions: TransactionsProp) {
       <CartesianGrid />
       <XAxis dataKey="month" />
       <YAxis />
-      <Tooltip />
-      <Bar dataKey="income" fill="#00ffb3"  barSize={50} />
-      <Bar dataKey="expense" fill="#ff036c"  barSize={50} />
+      <Tooltip cursor={{ fill: "#272727" }} contentStyle={{
+        backgroundColor: "#1f1f1f",
+        border: "none",
+        borderRadius: "8px",
+      }} />
+      <Bar dataKey="income" fill="#00ffb3" barSize={50} />
+      <Bar dataKey="expense" fill="#ff036c" barSize={50} />
     </BarChart>
   )
 }
@@ -94,11 +98,35 @@ export function PiesChart(transactions: TransactionsProp) {
     }
   }
   return (
-    <PieChart width={500} height={300} >
-      <Tooltip />
-      <Pie data={data} dataKey="amount" nameKey="category" innerRadius={60}
-        outerRadius={100} shape={CustomPieShape} />
-      <Legend />
-    </PieChart>
+    <div>
+      <PieChart width={700} height={300}>
+        <Tooltip cursor={{ fill: "#272727" }} contentStyle={{
+          backgroundColor: "#1f1f1f",
+          border: "none",
+          borderRadius: "8px",
+        }} />
+
+        <Pie
+          data={data}
+          dataKey="amount"
+          nameKey="category"
+          innerRadius={60}
+          outerRadius={100}
+          shape={CustomPieShape}
+        />
+      </PieChart>
+
+      <div className="flex flex-wrap gap-4 mt-4">
+        {data.map((item, index) => (
+          <div key={item.category} className="flex items-center gap-2">
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+            />
+            <span>{item.category}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
