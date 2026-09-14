@@ -7,18 +7,34 @@ export default async function Transactions() {
 
   const transactions = await getTransaction();
 
-  const totalOut = transactions.filter((value) => value.status === "Expense").reduce((sum, value) => sum + value.amount, 0);
-  const totalIn = transactions.filter((value) => value.status === "Income").reduce((sum, value) => sum + value.amount, 0);
+
+  const date = new Date();
+  const thisMonth = date.toLocaleDateString("en-Us", { month: "short"})
+  const thisYear = date.toLocaleDateString("en-Us", { year: "numeric" })
+
+  const totalIn = transactions
+    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+    .filter((v) => v.status === "Income").reduce((sum, value) => sum + value.amount, 0)
+
+  const totalOut = transactions
+    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+    .filter((v) => v.status === "Expense").reduce((sum, value) => sum + value.amount, 0)
+
   return (
-    <div className="p-5">
+    <div className="mr-5 ml-5">
+      <div className="mb-5 ">{thisMonth} {thisYear}</div>
       <div className="flex justify-between gap-5">
         <div className=" border w-full p-5">
-          <div>Total In</div>
-          <div>+${totalIn}</div>
+          <div className="text-[#00ffb3]" >Total In</div>
+          <div className="text-2xl text-[#00ffb3]">+${totalIn}</div>
         </div>
         <div className=" border w-full p-5">
-          <div>Total Out</div>
-          <div>-${totalOut}</div>
+          <div className="text-[#00ffea]" >Remaining For This Month</div>
+          <div className="text-2xl text-[#00ffea]">${totalIn - totalOut}</div>
+        </div>
+        <div className=" border w-full p-5">
+          <div className="text-[#ff036c]" >Total Out</div>
+          <div className="text-2xl text-[#ff036c]">-${totalOut}</div>
         </div>
       </div>
       <TransactionFilter transactions={transactions} />

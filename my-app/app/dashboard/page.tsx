@@ -59,7 +59,7 @@ export default async function Dashboard() {
       </div>
       <div className="border mt-10 p-5 hover:scale-101 transition-transform duration-300">
         <div className="text-2xl">Recent Transactions</div>
-        <AccountStatement transactions={transactions.slice(0, 5)} />
+        <AccountStatement transactions={transactions.slice(0, 5)} showStatus ={false} />
       </div>
     </div>
   )

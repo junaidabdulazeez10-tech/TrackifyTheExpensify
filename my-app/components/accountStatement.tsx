@@ -1,5 +1,6 @@
 "use client"
 import { Film, House, TrendingUp, Utensils, Car, Lightbulb, CircleEllipsis, ShoppingBag } from "lucide-react";
+import { useState } from "react";
 
 type Transaction = {
   id: string;
@@ -13,6 +14,7 @@ type Transaction = {
 
 type TransactionsProp = {
   transactions: Transaction[];
+  showStatus?: boolean;
 }
 
 const categoryIcons = {
@@ -26,8 +28,7 @@ const categoryIcons = {
   Others: CircleEllipsis
 }
 
-export default function AccountStatement({ transactions }: TransactionsProp) {
-
+export default function AccountStatement({ transactions, showStatus = true }: TransactionsProp) {
 
   return (
     <>
@@ -49,8 +50,8 @@ export default function AccountStatement({ transactions }: TransactionsProp) {
               </div>
             </div>
             <div className="flex flex-col">
-              {value.status === "Income" ? <div>+${value.amount}</div> : <div>-${value.amount}</div>}
-              <div>{value.status}</div>
+              {value.status === "Income" ? <div className="text-[#00ffb3]">+${value.amount}</div> : <div className="text-[#ff036c]">-${value.amount}</div>}
+              {showStatus && <div>{value.status}</div>}
             </div>
           </div>
         )
