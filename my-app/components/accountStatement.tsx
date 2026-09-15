@@ -18,26 +18,55 @@ type TransactionsProp = {
 }
 
 const categoryIcons = {
-  Income: TrendingUp,
-  Housing: House,
-  Food: Utensils,
-  Transportation: Car,
-  Entertainment: Film,
-  Shopping: ShoppingBag,
-  Utilities: Lightbulb,
-  Others: CircleEllipsis
+  Income: {
+    icon: TrendingUp,
+    color: "#00ffb3"
+  },
+
+  Housing: {
+    icon: House,
+    color: "#ff036c"
+  },
+
+  Food: {
+    icon: Utensils,
+    color: "#00c43b"
+  },
+
+  Transportation: {
+    icon: Car,
+    color: "#0051ff"
+  },
+  Entertainment: {
+    icon: Film,
+    color: "#fffb00"
+  },
+  Shopping: {
+    icon: ShoppingBag,
+    color: "#d400ff"
+  },
+  Utilities: {
+    icon: Lightbulb,
+    color: "#ff6600"
+  },
+  Others: {
+    icon: CircleEllipsis,
+    color: "#ff00008e"
+  }
 }
+
+
 
 export default function AccountStatement({ transactions, showStatus = true }: TransactionsProp) {
 
   return (
     <>
       {transactions.map((value) => {
-        const Icon = categoryIcons[value.category as keyof typeof categoryIcons]
+        const { icon: Icon, color } = categoryIcons[value.category as keyof typeof categoryIcons]
         return (
           <div key={value.id} className="flex justify-between border mt-2 p-5">
             <div className="flex gap-2">
-              <Icon />
+              <Icon color={color} />
               <div className="flex flex-col">
                 <div>{value.description}</div>
                 <div>

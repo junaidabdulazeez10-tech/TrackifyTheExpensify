@@ -2,7 +2,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, PieSectorShapeProps, Sector, Legend } from "recharts";
 
 const COLORS = [
-  "#00ffb3",
+  "#ff00008e",
   "#d400ff",
   "#0051ff",
   "#fffb00",
@@ -63,6 +63,7 @@ export function BarsChart(transactions: TransactionsProp) {
       }} />
       <Bar dataKey="income" fill="#00ffb3" barSize={50} />
       <Bar dataKey="expense" fill="#ff036c" barSize={50} />
+      <Legend align="left" iconType="circle" />
     </BarChart>
   )
 }
