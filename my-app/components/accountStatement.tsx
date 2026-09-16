@@ -1,13 +1,12 @@
 "use client"
 import { Film, House, TrendingUp, Utensils, Car, Lightbulb, CircleEllipsis, ShoppingBag } from "lucide-react";
-import { useState } from "react";
 
 type Transaction = {
   id: string;
   amount: number;
   category: string;
   description: string;
-  status: string;
+  type: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -79,8 +78,8 @@ export default function AccountStatement({ transactions, showStatus = true }: Tr
               </div>
             </div>
             <div className="flex flex-col">
-              {value.status === "Income" ? <div className="text-[#00ffb3]">+${value.amount}</div> : <div className="text-[#ff036c]">-${value.amount}</div>}
-              {showStatus && <div>{value.status}</div>}
+              {value.type === "Income" ? <div className="text-[#00ffb3]">+${value.amount}</div> : <div className="text-[#ff036c]">-${value.amount}</div>}
+              {showStatus && <div>{value.type}</div>}
             </div>
           </div>
         )

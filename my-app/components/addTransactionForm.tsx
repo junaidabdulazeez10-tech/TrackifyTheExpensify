@@ -1,13 +1,14 @@
 "use client"
 import { useState } from "react"
 import { createTransaction } from "../serverActions/transaction";
+import { TransactionType } from "@prisma/client";
 
 type AddTransactionFormProps = {
   setOpen: (value: boolean) => void;
 }
 
 export default function AddTransactionForm({ setOpen }: AddTransactionFormProps) {
-  const [status, setStatus] = useState("")
+  const [type, setType] = useState<TransactionType>("Expense")
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState("")
   const [description, setDescription] = useState("")
@@ -22,9 +23,10 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           Add Transaction
         </h1>
         <div className="flex justify-center gap-8">
-          <button type="button" className={`p-3 rounded-lg ${status === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setStatus("Income") }}>Income</button>
-          <button type="button" className={`p-3 rounded-lg ${status === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setStatus("Expense") }}>Expense</button>
+          <button type="button" className={`p-3 rounded-lg ${type === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setType("Income") }}>Income</button>
+          <button type="button" className={`p-3 rounded-lg ${type === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setType("Expense") }}>Expense</button>
         </div> 
+        <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
         <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
         <select className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="">Select Category</option>
@@ -37,8 +39,8 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Utilities">Utilities</option>
           <option className="p-3 rounded-lg bg-black/70 text-white" value="Others">Others</option>
         </select>
-        <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
-        <button type="button" onClick={async () => { await createTransaction({ amount: Number(amount), category, description, status }), setOpen(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
+        
+        <button type="button" onClick={async () => { await createTransaction({ amount: Number(amount), category, description, type }), setOpen(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
           Send
         </button>
         <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">

@@ -15,7 +15,7 @@ export function ThemeContextProvider({ children }: { children: React.ReactNode }
 
   return(
     <ThemeContext.Provider value={{theme, setTheme}}>
-      <div className={`${theme === "light" ? "bg-white text-black" : "bg-black text-white"} min-h-screen`}>
+      <div className={`${theme === "light" ? "bg-neutral-300 text-black" : "bg-black text-white"} min-h-screen`}>
         {children}
       </div>
     </ThemeContext.Provider>

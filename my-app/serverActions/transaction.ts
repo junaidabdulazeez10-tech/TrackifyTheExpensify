@@ -1,12 +1,13 @@
 "use server"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache";
+import { TransactionType } from "@prisma/client";
 
 type CreateTransactionProps = {
   amount: number;
   category: string;
   description: string;
-  status: string;
+  type: TransactionType;
 }
 
 export async function createTransaction(createTransactionProps: CreateTransactionProps) {

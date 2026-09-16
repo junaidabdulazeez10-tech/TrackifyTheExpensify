@@ -16,7 +16,7 @@ type Transaction = {
   amount: number;
   category: string;
   description: string;
-  status: string;
+  type: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,13 +36,13 @@ export function BarsChart(transactions: TransactionsProp) {
       let month = v.createdAt.toLocaleDateString("en-Us", { month: "short" })
       if (map.has(month)) {
         const existing = map.get(month)
-        if (v.status === "Income") {
+        if (v.type === "Income") {
           map.set(month, { ...existing, income: existing.income + v.amount })
         } else {
           map.set(month, { ...existing, expense: existing.expense + v.amount })
         }
       } else {
-        map.set(month, { month, income: v.status === "Income" ? v.amount : 0, expense: v.status === "Expense" ? v.amount : 0 })
+        map.set(month, { month, income: v.type === "Income" ? v.amount : 0, expense: v.type === "Expense" ? v.amount : 0 })
       }
     })
 

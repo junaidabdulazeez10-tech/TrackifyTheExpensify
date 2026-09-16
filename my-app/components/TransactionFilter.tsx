@@ -8,7 +8,7 @@ type Transaction = {
   amount: number;
   category: string;
   description: string;
-  status: string;
+  type: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,7 +19,7 @@ type TransactionsProp = {
 
 export default function TransactionFilter({ transactions }: TransactionsProp) {
   const [filter, setFilter] = useState("All")
-  const filteredTransactions = filter === "All" ? transactions : transactions.filter((value) => value.status === filter)
+  const filteredTransactions = filter === "All" ? transactions : transactions.filter((value) => value.type === filter)
   return (
     <>
       <div className="flex gap-4 mt-5 ">

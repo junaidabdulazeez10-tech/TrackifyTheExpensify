@@ -14,11 +14,11 @@ export default async function Transactions() {
 
   const totalIn = transactions
     .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
-    .filter((v) => v.status === "Income").reduce((sum, value) => sum + value.amount, 0)
+    .filter((v) => v.type === "Income").reduce((sum, value) => sum + value.amount, 0)
 
   const totalOut = transactions
     .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
-    .filter((v) => v.status === "Expense").reduce((sum, value) => sum + value.amount, 0)
+    .filter((v) => v.type === "Expense").reduce((sum, value) => sum + value.amount, 0)
 
   return (
     <div className="mr-5 ml-5">

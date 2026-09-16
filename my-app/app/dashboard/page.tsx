@@ -10,14 +10,14 @@ export default async function Dashboard() {
 
     const incomeFromThisMonth = transactions
    .filter((v) => v.createdAt.toLocaleDateString("en-Us", {month: "short"}) === thisMonth)
-   .filter((v) => v.status === "Income").reduce((sum, value) => sum + value.amount, 0)
+   .filter((v) => v.type === "Income").reduce((sum, value) => sum + value.amount, 0)
    
    const expenseFromThisMonth = transactions
    .filter((v) => v.createdAt.toLocaleDateString("en-Us", {month: "short"}) === thisMonth)
-   .filter((v) => v.status === "Expense").reduce((sum, value) => sum + value.amount, 0)
+   .filter((v) => v.type === "Expense").reduce((sum, value) => sum + value.amount, 0)
 
-   const income = transactions.filter((value) => value.status === "Income").reduce((sum, value) => sum + value.amount, 0)
-   const expense = transactions.filter((value) => value.status === "Expense").reduce((sum, v) => sum + v.amount, 0)
+   const income = transactions.filter((value) => value.type === "Income").reduce((sum, value) => sum + value.amount, 0)
+   const expense = transactions.filter((value) => value.type === "Expense").reduce((sum, v) => sum + v.amount, 0)
    const balance = income - expense;
 
 

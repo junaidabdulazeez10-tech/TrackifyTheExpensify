@@ -1,10 +1,23 @@
+import AddBudgetForm from "@/components/addBudgetForm";
+import { createBudget, getBudgets } from "@/serverActions/budget";
+import { TransactionType } from "@prisma/client";
 import { Car, CircleEllipsis, Film, House, Lightbulb, ShoppingBag, Utensils } from "lucide-react";
 
-export default function Budgets() {
+export default async function Budgets() {
+
+  const hi = await getBudgets()
 
   const spent = 2500
   const budget = 3000
   const percentage = Math.floor((spent / budget) * 100)
+  console.log(hi.map((v) => {
+    const data = { category: v.category, amount: v.amount }
+    return data
+  }))
+
+  async function createBudgetData(category: TransactionType, amount: number) {
+    await createBudget({ category, amount })
+  }
 
   const budgets = [
     { category: "Food", budget: 500 },
@@ -43,6 +56,7 @@ export default function Budgets() {
         <p>Monthly Budget</p>
         <div className="flex justify-between">
           <div><span className="text-4xl font-semibold">$2,500</span>/<span className="text-2xl">$3,000</span></div>
+          <AddBudgetForm category="Monthly Budget"></AddBudgetForm>
           <div className="flex flex-col text-right">
             <div className="text-2xl">${budget - spent}</div>
             <div>remaining</div>
@@ -65,7 +79,7 @@ export default function Budgets() {
             <div key={budget.category} className={`border p-5 col-span-2 ${index === budgets.length - 1 ? "col-start-2" : ""
               }`}>
               <div className="flex gap-1">
-                <Icon  color={COLORS[index % COLORS.length]} />
+                <Icon color={COLORS[index % COLORS.length]} />
                 <span>{budget.category}</span>
                 <div className="ml-auto">{percentage}%</div> {/*here you put the percentage this is wrong right now*/}
               </div>
@@ -75,11 +89,11 @@ export default function Budgets() {
                   style={{ width: `${percentage}%`, backgroundColor: COLORS[index % COLORS.length] }}
                 />
               </div>
-              <div className="flex">
+              <div className="flex items-center justify-between gap-2">
                 <div>$2000 spent</div> {/*here you put the what you spent this is wrong right now*/}
-                <div className="ml-auto">${budget.budget}</div> {/*here you put the what left so you do the budget minus waht you spent this is wrong right now*/}
+                <AddBudgetForm category={budget.category} />
+                <div className="font-semibold">${budget.budget}</div> {/*here you put the what left so you do the budget minus waht you spent this is wrong right now*/}
               </div>
-
             </div>
           );
         })}

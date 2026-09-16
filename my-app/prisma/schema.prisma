@@ -21,16 +21,30 @@ model User {
   // transactions Transaction[]
 }
 
+enum TransactionType {
+  Income
+  Expense
+}
+
 model Transaction {
   id          String   @id @default(cuid())
   amount      Float
   category    String
   description String
-  status      String
+  type        TransactionType
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   // userId      String
   // user        User @relation(fields: [userId], references: [id])
 }
 
+model budget {
+  id          String   @id @default(cuid())
+  category    String   @unique
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // userId      String
+  // user        User @relation(fields: [userId], references: [id])
+}
 
