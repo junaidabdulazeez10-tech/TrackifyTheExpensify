@@ -1,11 +1,11 @@
 import AccountStatement from "@/components/accountStatement";
 import TransactionFilter from "@/components/TransactionFilter";
-import { getTransaction } from "@/serverActions/transaction";
+import { getTransactions } from "@/serverActions/transaction";
 
 
 export default async function Transactions() {
 
-  const transactions = await getTransaction();
+  const transactions = await getTransactions();
 
 
   const date = new Date();

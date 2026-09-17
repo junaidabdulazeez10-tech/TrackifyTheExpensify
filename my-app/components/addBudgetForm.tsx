@@ -1,21 +1,19 @@
 "use client"
-import { createBudget } from "@/serverActions/budget"
+import { createOrUpdateBudget } from "@/serverActions/budget"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 
-export default function AddBudgetForm({ category }: { category: string }) {
+export default function AddBudgetForm({ category, hasAmount }: { category: string, hasAmount: number | undefined }) {
   const [showForm, setShowForm] = useState(false)
-  const [amount, setAmount] = useState("")
-  
+  const [amount, setAmount] = useState(hasAmount === undefined ? "" : String(hasAmount))
+
 
   return (
     <>
-      <div className="flex gap-2 border px-2 py-1 rounded-full">
-        <button onClick={() => setShowForm(true)} className="text-sm font-semibold text-white">
-          Assign Budgets
-        </button>
-        <Plus />
-      </div>
+      <button onClick={() => setShowForm(true)} className="text-sm font-semibold flex items-center gap-2 
+        border px-2 py-1 rounded-full hover:opacity-70 transition-opacity duration-200 cursor-pointer">
+        {hasAmount === undefined ? "Set Budget " : "Update Budget"}  <Plus />
+      </button>
 
       {showForm &&
         <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70">
@@ -23,8 +21,8 @@ export default function AddBudgetForm({ category }: { category: string }) {
             <h1 className="text-white text-2xl font-semibold text-center">
               Assign Budgets
             </h1>
-            <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
-            <button type="button" onClick={async () => { await createBudget({ amount: Number(amount), category }), setShowForm(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
+            <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70 transition-opacity duration-200" />
+            <button type="button" onClick={async () => { await createOrUpdateBudget({ amount: Number(amount), category }), setShowForm(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
               Send
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">

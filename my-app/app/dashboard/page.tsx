@@ -1,9 +1,9 @@
 import AccountStatement from "@/components/accountStatement";
-import { getTransaction } from "@/serverActions/transaction";
+import { getTransactions } from "@/serverActions/transaction";
 import {BarsChart, PiesChart} from "@/components/charts";
 
 export default async function Dashboard() {
-   const transactions = await getTransaction();
+   const transactions = await getTransactions();
 
    const date = new Date();
    const thisMonth = date.toLocaleDateString("en-Us", { month: "short" })

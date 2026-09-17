@@ -8,9 +8,18 @@ type createBudgetProps = {
 }
 
 
-export async function createBudget(createBudgetProps: createBudgetProps) {
-  const budget = prisma.budget.create({
-    data: createBudgetProps
+export async function createOrUpdateBudget({category, amount}: createBudgetProps) {
+  const budget = await prisma.budget.upsert({
+    create: {
+      category, 
+      amount
+    },
+    update: {
+      amount
+    }, 
+    where: {
+      category
+    }
   })
   revalidatePath("/budgets")
 

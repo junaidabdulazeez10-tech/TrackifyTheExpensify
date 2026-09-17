@@ -19,7 +19,7 @@ export async function createTransaction(createTransactionProps: CreateTransactio
   return transaction
 }
 
-export async function getTransaction() {
+export async function getTransactions() {
   return (await prisma.transaction.findMany(
     {
       orderBy: {
