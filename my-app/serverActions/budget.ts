@@ -1,6 +1,8 @@
 "use server"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 type createBudgetProps = {
   category: string;
@@ -9,16 +11,29 @@ type createBudgetProps = {
 
 
 export async function createOrUpdateBudget({category, amount}: createBudgetProps) {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if(!session) {
+    throw new Error("Unauthorized");
+  }
+
   const budget = await prisma.budget.upsert({
     create: {
       category, 
-      amount
+      amount,
+      userId: session.user.id
     },
     update: {
-      amount
+      amount,
     }, 
     where: {
-      category
+      userId_category: {
+        category,
+        userId: session.user.id
+      }
     }
   })
   revalidatePath("/budgets")
@@ -27,5 +42,18 @@ export async function createOrUpdateBudget({category, amount}: createBudgetProps
 }
 
 export async function getBudgets() {
-  return await prisma.budget.findMany()
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if(!session) {
+    throw new Error("Unauthorized");
+  }
+
+  return await prisma.budget.findMany({
+    where: {
+      userId: session.user.id
+    }
+  })
 }
