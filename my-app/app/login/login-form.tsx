@@ -1,11 +1,13 @@
 "use client";
 import { authClient } from "@/lib/auth-client";
+import { error } from "console";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
 
@@ -17,10 +19,10 @@ export default function LoginForm() {
     });
 
     if (error) {
-      alert(`Error logging in: ${error.message}`);
+      setError(error.message ? error.message : "An unknown error occurred");
       return;
     }
-    router.push("/");
+    router.push("/dashboard");
   }
   return (
     <div className="items-center justify-center flex">
@@ -30,6 +32,7 @@ export default function LoginForm() {
         </h1>
         <input placeholder="Email" className="p-3 rounded-lg border mb-10 hover:opacity-70 transition-opacity duration-200" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input placeholder="Password" type="password" className="p-3 rounded-lg border mb-10 hover:opacity-70 transition-opacity duration-200" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <p className="text-[#ff036c] text-center mb-5 text-xl">{error}</p>
         <button type="submit" className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
           Login
         </button>

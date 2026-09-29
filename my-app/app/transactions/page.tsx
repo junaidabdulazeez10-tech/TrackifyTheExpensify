@@ -1,15 +1,26 @@
 import AccountStatement from "@/components/accountStatement";
 import TransactionFilter from "@/components/TransactionFilter";
 import { getTransactions } from "@/serverActions/transaction";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 
 export default async function Transactions() {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session) {
+    redirect("/login")
+  }
 
   const transactions = await getTransactions();
 
 
   const date = new Date();
-  const thisMonth = date.toLocaleDateString("en-Us", { month: "short"})
+  const thisMonth = date.toLocaleDateString("en-Us", { month: "short" })
   const thisYear = date.toLocaleDateString("en-Us", { year: "numeric" })
 
   const totalIn = transactions

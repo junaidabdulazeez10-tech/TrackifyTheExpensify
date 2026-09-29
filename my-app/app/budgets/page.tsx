@@ -2,8 +2,19 @@ import AddBudgetForm from "@/components/addBudgetForm";
 import { getBudgets } from "@/serverActions/budget";
 import { getTransactions } from "@/serverActions/transaction";
 import { Car, CircleEllipsis, Film, House, Lightbulb, ShoppingBag, Utensils } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function Budgets() {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session) {
+    redirect("/login")
+  }
 
   const allBudgets = await getBudgets()
   const Transactions = await getTransactions()
@@ -63,7 +74,7 @@ export default async function Budgets() {
           </div>
 
           <div className="flex flex-col text-right">
-            <div className="text-2xl">{remaining < 0 ? "$" + Math.abs(remaining) + " Over budget" : "$" + remaining }</div>
+            <div className="text-2xl">{remaining < 0 ? "$" + Math.abs(remaining) + " Over budget" : "$" + remaining}</div>
             <div>remaining</div>
           </div>
         </div>

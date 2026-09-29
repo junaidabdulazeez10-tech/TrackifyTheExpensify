@@ -24,15 +24,15 @@ export default function Navbar() {
       return;
     }
 
-    router.push("/")
+    router.push("/login");
   }
 
   const { data: session } = authClient.useSession();
 
   return (
     <>
-      {session ? (<div className="grid grid-cols-3 items-center p-8 text-xl">
-        <div className="flex gap-20 mr-auto">
+      {session ? (<div className="grid grid-cols-3 p-8 text-xl">
+        <div className="flex gap-20 mr-auto items-center">
           <Link className="hover:scale-110 transition-transform duration-300" href="/">Home</Link>
           <Link className="hover:scale-110 transition-transform duration-300" href="/transactions">Transactions</Link>
           <Link className="hover:scale-110 transition-transform duration-300" href="/budgets">Budgets</Link>
