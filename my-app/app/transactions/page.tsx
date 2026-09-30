@@ -4,6 +4,7 @@ import { getTransactions } from "@/serverActions/transaction";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 
 export default async function Transactions() {
@@ -20,35 +21,40 @@ export default async function Transactions() {
 
 
   const date = new Date();
-  const thisMonth = date.toLocaleDateString("en-Us", { month: "short" })
-  const thisYear = date.toLocaleDateString("en-Us", { year: "numeric" })
+  const thisMonthAndYear = date.toLocaleDateString("en-Us", { month: "short", year: "numeric" })
+
 
   const totalIn = transactions
-    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short", year: "numeric" }) === thisMonthAndYear)
     .filter((v) => v.type === "Income").reduce((sum, value) => sum + value.amount, 0)
 
   const totalOut = transactions
-    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+    .filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short", year: "numeric" }) === thisMonthAndYear)
     .filter((v) => v.type === "Expense").reduce((sum, value) => sum + value.amount, 0)
 
   return (
     <div className="mr-5 ml-5">
-      <div className="mb-5 ">{thisMonth} {thisYear}</div>
+      <div className="mb-5 ">{thisMonthAndYear}</div>
       <div className="flex justify-between gap-5">
         <div className=" border w-full p-5">
           <div className="text-[#00ffb3]" >Total In</div>
-          <div className="text-2xl text-[#00ffb3]">+${totalIn}</div>
+          <div className="text-2xl text-[#00ffb3]">+{formatCurrency(totalIn)}</div>
         </div>
         <div className=" border w-full p-5">
           <div className="text-[#00ffea]" >Remaining For This Month</div>
-          <div className="text-2xl text-[#00ffea]">${totalIn - totalOut}</div>
+          <div className="text-2xl text-[#00ffea]">{formatCurrency(totalIn - totalOut)}</div>
         </div>
         <div className=" border w-full p-5">
           <div className="text-[#ff036c]" >Total Out</div>
-          <div className="text-2xl text-[#ff036c]">-${totalOut}</div>
+          <div className="text-2xl text-[#ff036c]">-{formatCurrency(totalOut)}</div>
         </div>
       </div>
-      <TransactionFilter transactions={transactions} />
+      {transactions.length === 0
+        ? <p className="text-center text-4xl mt-20">
+          No transactions yet. Add your first transaction to get started.
+        </p>
+        : <TransactionFilter transactions={transactions} />
+      }
     </div>
   )
 }

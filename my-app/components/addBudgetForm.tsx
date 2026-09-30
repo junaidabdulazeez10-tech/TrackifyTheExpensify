@@ -6,7 +6,30 @@ import { useState } from "react"
 export default function AddBudgetForm({ category, hasAmount }: { category: string, hasAmount: number | undefined }) {
   const [showForm, setShowForm] = useState(false)
   const [amount, setAmount] = useState(hasAmount === undefined ? "" : String(hasAmount))
+  const [error, setError] = useState("")
 
+  async function handleSubmit() {
+
+    setError("")
+    if (!amount.trim() || !category.trim()) {
+      setError("Please fill in all fields");
+      return;
+    } else if (Number(amount) <= 0 || Number.isNaN(Number(amount))) {
+      setError("Amount must be a positive number");
+      return;
+    }
+
+    try {
+      await createOrUpdateBudget({ amount: Number(amount), category })
+      setShowForm(false)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Something went wrong.");
+      }
+    }
+  }
 
   return (
     <>
@@ -21,13 +44,14 @@ export default function AddBudgetForm({ category, hasAmount }: { category: strin
             <h1 className="text-white text-2xl font-semibold text-center">
               Assign Budgets
             </h1>
-            <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70 transition-opacity duration-200" />
-            <button type="button" onClick={async () => { await createOrUpdateBudget({ amount: Number(amount), category }), setShowForm(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
+            <input placeholder="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70 transition-opacity duration-200" />
+            <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
               Send
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">
               Close
             </button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
           </form>
         </div>
       }

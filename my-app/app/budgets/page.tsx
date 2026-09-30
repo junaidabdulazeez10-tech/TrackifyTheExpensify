@@ -5,6 +5,7 @@ import { Car, CircleEllipsis, Film, House, Lightbulb, ShoppingBag, Utensils } fr
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export default async function Budgets() {
 
@@ -17,22 +18,22 @@ export default async function Budgets() {
   }
 
   const allBudgets = await getBudgets()
-  const Transactions = await getTransactions()
+  const transactions = await getTransactions()
 
   const date = new Date();
-  const thisMonth = date.toLocaleDateString("en-Us", { month: "short" })
+  const thisMonthAndYear = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-  const monthlySpending = Transactions.filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+  const monthlySpending = transactions.filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
     .filter((v) => v.type === "Expense").reduce((sum, v) => sum + v.amount, 0)
-  const monthlybudget = allBudgets.find((v) => v.category === "Monthly Budget")
+  const monthlyBudget = allBudgets.find((v) => v.category === "Monthly Budget")
   let percentage;
 
-  if (!monthlybudget) {
+  if (!monthlyBudget) {
     percentage = 0;
   } else {
-    percentage = Math.floor(monthlySpending / (monthlybudget.amount) * 100)
+    percentage = Math.floor(monthlySpending / (monthlyBudget.amount) * 100)
   }
-  const remaining = (monthlybudget?.amount === undefined ? 0 : monthlybudget?.amount) - monthlySpending
+  const remaining = (monthlyBudget?.amount === undefined ? 0 : monthlyBudget?.amount) - monthlySpending
 
 
 
@@ -65,17 +66,16 @@ export default async function Budgets() {
         <p>Monthly Budget</p>
         <div className="grid grid-cols-3 items-center">
           <div>
-            <span className="text-4xl font-semibold">{monthlySpending}</span>/
-            <span className="text-2xl">${monthlybudget?.amount}</span>
+            <span className="text-4xl font-semibold">{formatCurrency(monthlySpending)}</span>/
+            <span className="text-2xl">{formatCurrency(monthlyBudget?.amount ?? 0)}</span>
           </div>
 
           <div className="flex justify-center self-start">
-            <AddBudgetForm category="Monthly Budget" hasAmount={monthlybudget?.amount} />
+            <AddBudgetForm category="Monthly Budget" hasAmount={monthlyBudget?.amount} />
           </div>
 
           <div className="flex flex-col text-right">
-            <div className="text-2xl">{remaining < 0 ? "$" + Math.abs(remaining) + " Over budget" : "$" + remaining}</div>
-            <div>remaining</div>
+            <div className="font-semibold">{!monthlyBudget ? "No Budget Set" : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
           </div>
         </div>
         <div className="w-full bg-gray-400 rounded-full h-3 mt-2 mb-2">
@@ -84,14 +84,14 @@ export default async function Budgets() {
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
-        <p>{percentage}% of budget used</p>
+        <p>{!monthlyBudget ? "No Budget Set" : `${percentage}% of budget used`}</p>
       </div>
 
       <div className="grid grid-cols-4 gap-10 mt-5">
         {Object.entries(categoryIcons).map(([category, Icon], index) => {
 
           const budgets = allBudgets.find((v) => v.category === category)
-          const monthlyCategorySpending = Transactions.filter((v) => v.createdAt.toLocaleDateString("en-Us", { month: "short" }) === thisMonth)
+          const monthlyCategorySpending = transactions.filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
             .filter((v) => v.type === "Expense").filter((v) => v.category === category).reduce((sum, v) => sum + v.amount, 0)
 
           let percentage;
@@ -108,7 +108,7 @@ export default async function Budgets() {
               <div className="flex gap-1">
                 <Icon color={COLORS[index % COLORS.length]} />
                 <span>{category}</span>
-                <div className="ml-auto">{percentage}%</div>
+                <div className="ml-auto">{!budgets ? "—" : `${percentage}%`}</div>
               </div>
               <div className="w-full bg-gray-400 rounded-full h-3 mt-2 mb-2">
                 <div className="bg-green-700 h-3 rounded-full"
@@ -116,9 +116,10 @@ export default async function Budgets() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <div>Spent: ${monthlyCategorySpending}</div>
+                <div>Spent: {formatCurrency(monthlyCategorySpending)}</div>
                 <AddBudgetForm category={category} hasAmount={budgets?.amount} />
-                <div className="font-semibold">{remaining < 0 ? "$" + Math.abs(remaining) + " Over budget" : "Remaining: $" + remaining}</div>
+                <div className="font-semibold">{!budgets ? "No Budget Set" 
+                : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
               </div>
             </div>
           );

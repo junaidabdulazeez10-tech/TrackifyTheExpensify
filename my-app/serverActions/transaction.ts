@@ -24,6 +24,23 @@ export async function createTransaction(createTransactionProps: CreateTransactio
     throw new Error("Unauthorized");
   }
 
+  const { amount, category, description, type } = createTransactionProps;
+  const allowedCategories = ["Income", "Food", "Housing", "Shopping", "Transportation", "Entertainment", "Utilities", "Others"];
+
+  if (!category.trim() || !description.trim()) {
+      throw new Error("Please fill in all fields");
+    } else if (amount <= 0 || Number.isNaN(amount)) {
+      throw new Error("Amount must be a positive number");
+    } else if (type !== "Income" && type !== "Expense") {
+      throw new Error("Invalid transaction type");
+    } else if (!allowedCategories.includes(category)) {
+      throw new Error("Invalid category");
+    } else if (type === "Income" && category !== "Income") {
+      throw new Error("Income transactions must have the category 'Income'");
+    } else if (type === "Expense" && category === "Income") {
+      throw new Error("Expense transactions cannot have the category 'Income'");
+    } 
+
   const transaction = await prisma.transaction.create({
     data: {
       ...createTransactionProps,

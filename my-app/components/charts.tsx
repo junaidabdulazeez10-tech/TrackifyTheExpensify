@@ -27,13 +27,17 @@ type TransactionsProp = {
 
 export function BarsChart(transactions: TransactionsProp) {
 
-  const data = categoryAmount()
+  const data = categoryAmount().sort((a, b) => {
+    const dateA = new Date(a.month);
+    const dateB = new Date(b.month);
+    return dateA.getTime() - dateB.getTime();
+  })
 
   function categoryAmount() {
     const map = new Map()
 
     transactions.transactions.forEach((v: Transaction) => {
-      let month = v.createdAt.toLocaleDateString("en-Us", { month: "short" })
+      let month = v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" })
       if (map.has(month)) {
         const existing = map.get(month)
         if (v.type === "Income") {
@@ -91,8 +95,13 @@ export function PiesChart(transactions: TransactionsProp) {
     categoryAmount("Food"),
   ]
 
+  const date = new Date();
+  const thisMonth = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
   function categoryAmount(category: string) {
-    const data = transactions.transactions.filter((v: Transaction) => v.category === category).reduce((sum, v) => sum + v.amount, 0)
+    const data = transactions.transactions.filter((v: Transaction) => v.category === category)
+    .filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonth)
+    .reduce((sum, v) => sum + v.amount, 0)
     return {
       category,
       amount: data

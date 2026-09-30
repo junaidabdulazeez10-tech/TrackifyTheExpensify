@@ -12,6 +12,29 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState("")
   const [description, setDescription] = useState("")
+  const [error, setError] = useState("")
+
+
+  async function handleSubmit() {
+    setError("")
+    if (!amount.trim() || !category.trim() || !description.trim()) {
+      setError("Please fill in all fields");
+      return;
+    } else if (Number(amount) <= 0 || Number.isNaN(Number(amount))) {
+      setError("Amount must be a positive number");
+      return;
+    }
+    try {
+      await createTransaction({ amount: Number(amount), category, description, type })
+      setOpen(false)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Something went wrong.");
+      }
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -23,29 +46,30 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           Add Transaction
         </h1>
         <div className="flex justify-center gap-8">
-          <button type="button" className={`p-3 rounded-lg ${type === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setType("Income") }}>Income</button>
-          <button type="button" className={`p-3 rounded-lg ${type === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={(e) => { setType("Expense") }}>Expense</button>
-        </div> 
+          <button type="button" className={`p-3 rounded-lg ${type === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Income"); setCategory("Income"), setError("") }}>Income</button>
+          <button type="button" className={`p-3 rounded-lg ${type === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Expense"); setCategory(""), setError("") }}>Expense</button>
+        </div>
         <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
-        <input placeholder="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
-        <select className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="">Select Category</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Income">Income</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Food">Food</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Housing">Housing</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Shopping">Shopping</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Transportation">Transportation</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Entertainment">Entertainment</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Utilities">Utilities</option>
-          <option className="p-3 rounded-lg bg-black/70 text-white" value="Others">Others</option>
-        </select>
-        
-        <button type="button" onClick={async () => { await createTransaction({ amount: Number(amount), category, description, type }), setOpen(false) }} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
+        <input placeholder="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
+        {type === "Expense" && (
+          <select className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="">Select Category</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Food">Food</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Housing">Housing</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Shopping">Shopping</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Transportation">Transportation</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Entertainment">Entertainment</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Utilities">Utilities</option>
+            <option className="p-3 rounded-lg bg-black/70 text-white" value="Others">Others</option>
+          </select>
+        )}
+        <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
           Send
         </button>
         <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">
           Close
         </button>
+        {error && <p className="text-[#ff036c] text-center">{error}</p>}
       </form>
     </div>
   )

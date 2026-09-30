@@ -20,6 +20,13 @@ export async function createOrUpdateBudget({category, amount}: createBudgetProps
     throw new Error("Unauthorized");
   }
 
+  const validCategorys = ["Monthly Budget", "Food", "Housing", "Shopping", "Transportation", "Entertainment", "Utilities", "Others"]
+  if(!validCategorys.includes(category)) {
+    throw new Error("Invalid category");
+  } else if(amount <= 0 || Number.isNaN(amount)) {
+    throw new Error("Amount must be a positive number");
+  }
+
   const budget = await prisma.budget.upsert({
     create: {
       category, 
