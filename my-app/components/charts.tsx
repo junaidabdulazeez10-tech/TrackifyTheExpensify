@@ -85,6 +85,20 @@ function CustomPieShape(props: PieSectorShapeProps) {
 }
 
 export function PiesChart(transactions: TransactionsProp) {
+
+  function categoryAmount(category: string) {
+    const data = transactions.transactions.filter((v: Transaction) => v.category === category)
+      .filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonth)
+      .reduce((sum, v) => sum + v.amount, 0)
+    return {
+      category,
+      amount: data
+    }
+  }
+
+  const date = new Date();
+  const thisMonth = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
   const data = [
     categoryAmount("Others"),
     categoryAmount("Shopping"),
@@ -95,18 +109,9 @@ export function PiesChart(transactions: TransactionsProp) {
     categoryAmount("Food"),
   ]
 
-  const date = new Date();
-  const thisMonth = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-  function categoryAmount(category: string) {
-    const data = transactions.transactions.filter((v: Transaction) => v.category === category)
-    .filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonth)
-    .reduce((sum, v) => sum + v.amount, 0)
-    return {
-      category,
-      amount: data
-    }
-  }
+
+
   return (
     <div>
       <PieChart width={700} height={300}>

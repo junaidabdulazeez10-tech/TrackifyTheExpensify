@@ -1,6 +1,37 @@
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (session) {
+    redirect("/dashboard")
+  }
+
   return (
-   <>Home</>
+
+    <div>
+      <div className="text-center mt-10 text-4xl">Take Control Of Your Finances!</div>
+      <div className="text-center mt-10 text-2xl">
+        Track your income and expenses, set monthly
+        budgets, and understand your spending through
+        simple charts and category breakdowns.
+      </div>
+      <div className="text-center mt-10 text-2xl">
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#bbff008f] transition-colors duration-200" href="/demo">Get Started With The Demo Here!</Link>
+      </div>
+      <div className="text-center mt-10 text-2xl">
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#00ffb38f] transition-colors duration-200" href="/sign-up">Sign Up Here!</Link>
+      </div>
+      <div className="text-center mt-10 text-2xl">
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#00ffb3] transition-colors duration-200" href="/login">Already have an Account, Then Login Here!</Link>
+      </div>
+    </div>
+
   );
 }
