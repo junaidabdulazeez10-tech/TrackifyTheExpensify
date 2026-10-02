@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeContextProvider } from "@/context/theme-context";
+import AnimatedBackground from "@/components/animatedBackground";
 
 
 const geistSans = Geist({
@@ -32,8 +33,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col border-5">
         <ThemeContextProvider>
+          <AnimatedBackground />
+          <div className="relative z-10">
             <Navbar />
             {children}
+          </div>
+
         </ThemeContextProvider>
       </body>
     </html>

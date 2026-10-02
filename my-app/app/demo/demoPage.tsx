@@ -3,7 +3,7 @@
 import AccountStatement from "@/components/accountStatement";
 import { BarsChart, PiesChart } from "@/components/charts";
 import TransactionFilter from "@/components/TransactionFilter";
-import { formatCurrency } from "@/lib/formatCurrency";
+import { formatCurrency } from "@/lib/calculations";
 import { Car, CircleEllipsis, Film, House, Lightbulb, ShoppingBag, Utensils } from "lucide-react";
 import { useState } from "react";
 

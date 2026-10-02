@@ -4,7 +4,7 @@ import { BarsChart, PiesChart } from "@/components/charts";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { formatCurrency } from "@/lib/formatCurrency";
+import { calculateSavingsRate, formatCurrency, calculateTotalByType, calculateMonthlyTotalByType } from "@/lib/calculations";
 
 export default async function Dashboard() {
 
@@ -21,19 +21,14 @@ export default async function Dashboard() {
   const date = new Date();
   const thisMonthAndYear = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-  const incomeFromThisMonth = transactions
-    .filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
-    .filter((v) => v.type === "Income").reduce((sum, value) => sum + value.amount, 0)
+  const incomeFromThisMonth = calculateMonthlyTotalByType(transactions, "Income", thisMonthAndYear)
 
-  const expenseFromThisMonth = transactions
-    .filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
-    .filter((v) => v.type === "Expense").reduce((sum, value) => sum + value.amount, 0)
+  const expenseFromThisMonth = calculateMonthlyTotalByType(transactions, "Expense", thisMonthAndYear)
 
-  const income = transactions.filter((value) => value.type === "Income").reduce((sum, value) => sum + value.amount, 0)
-  const expense = transactions.filter((value) => value.type === "Expense").reduce((sum, v) => sum + v.amount, 0)
+  const income = calculateTotalByType(transactions, "Income");
+  const expense = calculateTotalByType(transactions, "Expense");
   const balance = income - expense;
 
-  const savingsRate = incomeFromThisMonth === 0 ? 0 : ((incomeFromThisMonth - expenseFromThisMonth) / incomeFromThisMonth) * 100;
 
 
 
@@ -58,7 +53,7 @@ export default async function Dashboard() {
         </div>
         <div className="border rounded w-full p-5 hover:scale-105 transition-transform duration-300">
           <p>Savings Rate</p>
-          <p className="text-2xl">{savingsRate.toFixed(2)}%</p>
+          <p className="text-2xl">{calculateSavingsRate(incomeFromThisMonth, expenseFromThisMonth).toFixed(2)}%</p>
           <p>{thisMonthAndYear}</p>
         </div>
       </div>

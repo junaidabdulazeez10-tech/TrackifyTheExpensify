@@ -1,10 +1,9 @@
-import AccountStatement from "@/components/accountStatement";
 import TransactionFilter from "@/components/TransactionFilter";
 import { getTransactions } from "@/serverActions/transaction";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { formatCurrency } from "@/lib/formatCurrency";
+import { formatCurrency } from "@/lib/calculations";
 
 
 export default async function Transactions() {

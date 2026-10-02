@@ -5,7 +5,7 @@ import { Car, CircleEllipsis, Film, House, Lightbulb, ShoppingBag, Utensils } fr
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { formatCurrency } from "@/lib/formatCurrency";
+import { formatCurrency, calculateMonthlyTotalByType, calculateCategorySpending, calculatePercentage, calculateRemaining } from "@/lib/calculations";
 
 export default async function Budgets() {
 
@@ -23,17 +23,11 @@ export default async function Budgets() {
   const date = new Date();
   const thisMonthAndYear = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-  const monthlySpending = transactions.filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
-    .filter((v) => v.type === "Expense").reduce((sum, v) => sum + v.amount, 0)
+  const monthlySpending = calculateMonthlyTotalByType(transactions, "Expense", thisMonthAndYear)
   const monthlyBudget = allBudgets.find((v) => v.category === "Monthly Budget")
-  let percentage;
 
-  if (!monthlyBudget) {
-    percentage = 0;
-  } else {
-    percentage = Math.floor(monthlySpending / (monthlyBudget.amount) * 100)
-  }
-  const remaining = (monthlyBudget?.amount === undefined ? 0 : monthlyBudget?.amount) - monthlySpending
+  const percentage = calculatePercentage(monthlySpending, monthlyBudget?.amount ?? 0);
+  const remaining = calculateRemaining(monthlyBudget?.amount ?? 0, monthlySpending)
 
 
 
@@ -91,17 +85,11 @@ export default async function Budgets() {
         {Object.entries(categoryIcons).map(([category, Icon], index) => {
 
           const budgets = allBudgets.find((v) => v.category === category)
-          const monthlyCategorySpending = transactions.filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === thisMonthAndYear)
-            .filter((v) => v.type === "Expense").filter((v) => v.category === category).reduce((sum, v) => sum + v.amount, 0)
+          const monthlyCategorySpending = calculateCategorySpending(transactions, "Expense", category, thisMonthAndYear)
 
-          let percentage;
-          if (!budgets) {
-            percentage = 0;
-          } else {
-            percentage = Math.floor((monthlyCategorySpending / budgets.amount) * 100)
-          }
+          const percentage = calculatePercentage(monthlyCategorySpending, budgets?.amount ?? 0);
 
-          const remaining = (budgets?.amount ?? 0) - monthlyCategorySpending
+          const remaining = calculateRemaining(budgets?.amount ?? 0, monthlyCategorySpending)
 
           return (
             <div key={category} className={`border p-5 col-span-2 ${index === Object.entries(categoryIcons).length - 1 ? "col-start-2" : ""}`}>
@@ -118,8 +106,8 @@ export default async function Budgets() {
               <div className="flex items-center justify-between gap-2">
                 <div>Spent: {formatCurrency(monthlyCategorySpending)}</div>
                 <AddBudgetForm category={category} hasAmount={budgets?.amount} />
-                <div className="font-semibold">{!budgets ? "No Budget Set" 
-                : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
+                <div className="font-semibold">{!budgets ? "No Budget Set"
+                  : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
               </div>
             </div>
           );

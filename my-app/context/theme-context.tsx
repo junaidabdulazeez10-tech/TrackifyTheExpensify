@@ -13,18 +13,18 @@ const ThemeContext = createContext<ThemeContext | null>(null)
 export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark")
 
-  return(
-    <ThemeContext.Provider value={{theme, setTheme}}>
-      <div className={`${theme === "light" ? "bg-neutral-300 text-black" : "bg-black text-white"} min-h-screen`}>
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div className={`${theme === "light" ? "text-black" : "text-white"} min-h-screen`}>
         {children}
       </div>
     </ThemeContext.Provider>
   )
 }
 
-export function useThemeContext(){
+export function useThemeContext() {
   const context = useContext(ThemeContext)
-  if(!context){
+  if (!context) {
     throw new Error("use it within ThemeContextProvider buddy!");
   }
   return context
