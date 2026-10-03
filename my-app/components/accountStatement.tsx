@@ -63,7 +63,7 @@ export default function AccountStatement({ transactions, showStatus = true }: Tr
       {transactions.map((value) => {
         const { icon: Icon, color } = categoryIcons[value.category as keyof typeof categoryIcons]
         return (
-          <div key={value.id} className="flex justify-between border mt-2 p-5">
+          <div key={value.id} className="flex flex-col sm:flex-row sm:justify-between gap-3 border mt-2 p-4 sm:p-5">
             <div className="flex gap-2">
               <Icon color={color} />
               <div className="flex flex-col">
@@ -77,7 +77,7 @@ export default function AccountStatement({ transactions, showStatus = true }: Tr
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-start sm:items-end">
               {value.type === "Income" ? <div className="text-[#00ffb3]">+${value.amount}</div> : <div className="text-[#ff036c]">-${value.amount}</div>}
               {showStatus && <div>{value.type}</div>}
             </div>

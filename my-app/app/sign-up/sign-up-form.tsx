@@ -34,9 +34,9 @@ export default function SignUpForm() {
     router.push("/dashboard");
   }
   return (
-    <div className="items-center justify-center flex">
-      <form className="w-[520px] p-8 rounded-2xl flex flex-col h-[400px]" onSubmit={handleSubmit}>
-        <h1 className="text-8xl font-semibold text-center mb-20">
+    <div className="flex items-center justify-center">
+      <form className="w-full max-w-[520px] mx-4 sm:mx-6 p-5 sm:p-8 rounded-2xl flex flex-col min-h-[400px]" onSubmit={handleSubmit}>
+        <h1 className="text-5xl sm:text-6xl lg:text-8xl font-semibold text-center mb-12 sm:mb-20">
           Sign Up
         </h1>
         <input placeholder="Name" className="p-3 rounded-lg border mb-10 hover:opacity-70 transition-opacity duration-200" value={name} onChange={(e) => setName(e.target.value)} />

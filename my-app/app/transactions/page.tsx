@@ -32,9 +32,9 @@ export default async function Transactions() {
     .filter((v) => v.type === "Expense").reduce((sum, value) => sum + value.amount, 0)
 
   return (
-    <div className="mr-5 ml-5">
+    <div className="mx-3 sm:mx-5">
       <div className="mb-5 ">{thisMonthAndYear}</div>
-      <div className="flex justify-between gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <div className=" border w-full p-5">
           <div className="text-[#00ffb3]" >Total In</div>
           <div className="text-2xl text-[#00ffb3]">+{formatCurrency(totalIn)}</div>
@@ -49,7 +49,7 @@ export default async function Transactions() {
         </div>
       </div>
       {transactions.length === 0
-        ? <p className="text-center text-4xl mt-20">
+        ? <p className="text-center text-xl sm:text-2xl lg:text-4xl mt-20">
           No transactions yet. Add your first transaction to get started.
         </p>
         : <TransactionFilter transactions={transactions} />

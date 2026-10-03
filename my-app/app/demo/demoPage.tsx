@@ -190,19 +190,20 @@ export default function DemoPage() {
 
   return (
     <>
-      <div className="flex gap-5 justify-left align-center p-5">
-        <button onClick={() => { setPage("dashboard") }} className={`border rounded text-xl p-2 hover:bg-neutral-600 transition-colors duration-300 ${page === "dashboard" && "bg-neutral-700"}`}>Dashboard Page Overview</button>
-        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl p-2 hover:bg-neutral-600 transition-colors duration-300 ${page === "transactions" && "bg-neutral-700"}`}>Transactions Page Overview</button>
-        <button onClick={() => { setPage("budget") }} className={`border rounded text-xl p-2 hover:bg-neutral-600 transition-colors duration-300 ${page === "budget" && "bg-neutral-700"}`}>Budget Page Overview</button>
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 p-5">
+        <button onClick={() => { setPage("dashboard") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "dashboard" && "bg-[#00ffb3]"}`}>Dashboard Page Overview</button>
+        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "transactions" && 
+          "bg-[#00ffb3]"}`}>Transactions Page Overview</button>
+        <button onClick={() => { setPage("budget") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "budget" && "bg-[#00ffb3]"}`}>Budget Page Overview</button>
       </div>
 
       {page === "dashboard" && (
         <>
-          <div className="text-center text-5xl mb-10">Dashboard Page Overview</div>
-          <div className="mr-5 ml-5">
-            <div className="flex justify-between gap-10">
+          <div className="text-center text-3xl sm:text-4xl lg:text-5xl mb-10">Dashboard Page Overview</div>
+          <div className="mx-3 sm:mx-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10">
               <div className="border rounded w-full p-5 hover:scale-105 transition-transform duration-300">
-                <p>Total Balance</p>
+                <p className="text-[#00c3ff] text-2xl font-semibold">Total Balance</p>
                 <p className="text-2xl">{formatCurrency(2000 - 1050)}</p>
                 <p>Overall</p>
               </div>
@@ -217,19 +218,19 @@ export default function DemoPage() {
                 <p>{"Oct 2026"}</p>
               </div>
               <div className="border rounded w-full p-5 hover:scale-105 transition-transform duration-300">
-                <p>Savings Rate</p>
+                <p className="text-[#1eff00] text-2xl font-semibold">Savings Rate</p>
                 <p className="text-2xl">{((2000 - 1050) / 2000 * 100).toFixed(2)}%</p>
                 <p>{"Oct 2026"}</p>
               </div>
             </div>
-            <div className="flex gap-10 mt-6">
-              <div className="border flex-2 p-5 hover:scale-102 transition-transform duration-300 ">
+            <div className="flex flex-col xl:flex-row gap-5 lg:gap-10 mt-6">
+              <div className="border xl:flex-2 p-5 hover:scale-102 transition-transform duration-300 ">
                 <p className="text-2xl">Income vs Expenses</p>
-                <div className="flex justify-center"><BarsChart transactions={transactions} /></div>
+                <div className="w-full"><BarsChart transactions={transactions} /></div>
               </div>
-              <div className="border flex-1 p-5 hover:scale-102 transition-transform duration-300 ">
+              <div className="border xl:flex-1 p-5 hover:scale-102 transition-transform duration-300 ">
                 <p className="text-2xl">By Category</p>
-                <div className="flex justify-center"><PiesChart transactions={transactions} /></div>
+                <div className="w-full"><PiesChart transactions={transactions} /></div>
               </div>
             </div>
             <div className="border mt-10 p-5 hover:scale-101 transition-transform duration-300">
@@ -240,10 +241,10 @@ export default function DemoPage() {
         </>)}
       {page === "transactions" && (
         <>
-          <div className="text-center text-5xl">Transactions Page Overview</div>
-          <div className="mr-5 ml-5">
+          <div className="text-center text-3xl sm:text-4xl lg:text-5xl">Transactions Page Overview</div>
+          <div className="mx-3 sm:mx-5">
             <div className="mb-5 ">{"Oct 2026"}</div>
-            <div className="flex justify-between gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               <div className=" border w-full p-5">
                 <div className="text-[#00ffb3]" >Total In</div>
                 <div className="text-2xl text-[#00ffb3]">+{formatCurrency(4600)}</div>
@@ -262,18 +263,18 @@ export default function DemoPage() {
         </>)}
       {page === "budget" && (
         <>
-          <div className="text-center text-5xl mb-10">Budget Page Overview</div>
-          <div className="mr-5 ml-5">
+          <div className="text-center text-3xl sm:text-4xl lg:text-5xl mb-10">Budget Page Overview</div>
+          <div className="mx-3 sm:mx-5">
             <div className="border rounded p-5">
               <p>Monthly Budget</p>
-              <div className="grid grid-cols-3 items-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                 <div>
-                  <span className="text-4xl font-semibold">{formatCurrency(1050)}</span>/
-                  <span className="text-2xl">{formatCurrency(1500)}</span>
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-semibold">{formatCurrency(1050)}</span>/
+                  <span className="text-lg sm:text-xl lg:text-2xl">{formatCurrency(1500)}</span>
                 </div>
                 <div className="flex justify-center self-start">
                 </div>
-                <div className="flex flex-col text-right">
+                <div className="flex flex-col text-left md:text-right">
                   <div className="font-semibold">{formatCurrency(450)}</div>
                 </div>
               </div>
@@ -282,7 +283,7 @@ export default function DemoPage() {
               </div>
               <p>{`${70}% of budget used`}</p>
             </div>
-            <div className="grid grid-cols-4 gap-10 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10 mt-5">
               {Object.entries(categoryIcons).map(([category, Icon], index) => {
                 const budgets = allBudgets.find((v) => v.category === category)
                 const monthlyCategorySpending = transactions.filter((v) => v.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) === "Oct 2026")
@@ -295,7 +296,7 @@ export default function DemoPage() {
                 }
                 const remaining = (budgets?.amount ?? 0) - monthlyCategorySpending
                 return (
-                  <div key={category} className={`border p-5 col-span-2 ${index === Object.entries(categoryIcons).length - 1 ? "col-start-2" : ""}`}>
+                  <div key={category} className="border p-5">
                     <div className="flex gap-1">
                       <Icon color={COLORS[index % COLORS.length]} />
                       <span>{category}</span>
@@ -306,7 +307,7 @@ export default function DemoPage() {
                         style={{ width: `${Math.min(percentage, 100)}%`, backgroundColor: COLORS[index % COLORS.length] }}
                       />
                     </div>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div>Spent: {formatCurrency(monthlyCategorySpending)}</div>
                       <div className="font-semibold">{"remains: " + formatCurrency(remaining)}</div>
                     </div>

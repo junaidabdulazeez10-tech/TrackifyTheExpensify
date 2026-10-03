@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react"
 import AddTransactionForm from "./addTransactionForm";
 import { useThemeContext } from "@/context/theme-context";
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, Menu, X } from "lucide-react"
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
 
   const [open, setOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const { setTheme, theme } = useThemeContext()
 
   const router = useRouter();
@@ -31,25 +33,110 @@ export default function Navbar() {
 
   return (
     <>
-      {session ? (<div className="grid grid-cols-3 p-8 text-xl">
+      <div className="lg:hidden p-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-2xl sm:text-3xl hover:scale-110 hover:bg-white/10 transition-all duration-300 cursor-pointer">
+            TrackifyTheExpensify
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <button
+              className="border p-2 hover:scale-110 hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              onClick={() =>
+                setTheme(prev => prev === "light" ? "dark" : "light")
+              }
+            >
+              {theme === "light" ? <Moon /> : <Sun />}
+            </button>
+
+            <button
+              className="border p-2 hover:scale-110 hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              onClick={() => setMenuOpen(prev => !prev)}
+            >
+              {menuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+        </div>
+        {menuOpen && (
+          <div className="flex flex-col gap-3 mt-4">
+            {session ? (
+              <>
+                <Link href="/transactions" onClick={() => setMenuOpen(false)}>
+                  Transactions
+                </Link>
+
+                <Link href="/budgets" onClick={() => setMenuOpen(false)}>
+                  Budgets
+                </Link>
+
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)}>
+                  Dashboard
+                </Link>
+
+                <button
+                  className="border p-2 text-left"
+                  onClick={() => {
+                    setOpen(true)
+                    setMenuOpen(false)
+                  }}
+                >
+                  + Add
+                </button>
+
+                <button
+                  className="border p-2 text-left"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/" onClick={() => setMenuOpen(false)}>
+                  Home
+                </Link>
+
+                <Link href="/demo" onClick={() => setMenuOpen(false)}>
+                  Demo
+                </Link>
+
+                <Link href="/sign-up" onClick={() => setMenuOpen(false)}>
+                  Sign up
+                </Link>
+
+                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                  Login
+                </Link>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+
+      {session ? (<div className="hidden lg:grid grid-cols-3 p-8 text-xl">
         <div className="flex gap-20 mr-auto items-center">
           <Link className="hover:scale-110 transition-transform duration-300" href="/transactions">Transactions</Link>
           <Link className="hover:scale-110 transition-transform duration-300" href="/budgets">Budgets</Link>
           <Link className="hover:scale-110 transition-transform duration-300" href="/dashboard">Dashboard</Link>
           <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Moon size={35} /> : <Sun size={35} />}</button>
         </div>
-        <Link href="/" className="text-6xl text-center hover:scale-110 transition-transform duration-300">TrackifyTheExpensify</Link>
+        <Link href="/" className="text-4xl xl:text-5xl 2xl:text-6xl text-center whitespace-nowrap hover:scale-105 transition-transform duration-300">
+          TrackifyTheExpensify
+        </Link>
         <div className="flex gap-20 ml-auto">
           <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setOpen(true) }}>+ Add</button>
           <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer hover:bg-[#ff036c] transition-colors duration-200" onClick={handleLogout}>Logout</button>
         </div>
-      </div>) : (<div className="grid grid-cols-3 items-center p-8 text-xl">
+      </div>) : (<div className="hidden lg:grid grid-cols-3 items-center p-8 text-xl">
         <div className="flex items-center gap-20 mr-auto">
           <Link className="hover:scale-110 transition-transform duration-300" href="/">Home</Link>
           <Link className="hover:scale-110 transition-transform duration-300" href="/demo">Demo</Link>
           <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Moon size={35} /> : <Sun size={35} />}</button>
         </div>
-        <Link href="/" className="text-6xl text-center hover:scale-110 transition-transform duration-300">TrackifyTheExpensify</Link>
+        <Link href="/" className="text-4xl xl:text-5xl 2xl:text-6xl text-center whitespace-nowrap hover:scale-105 transition-transform duration-300">
+          TrackifyTheExpensify
+        </Link>
         <div className="flex gap-20 ml-auto">
           <Link className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer hover:bg-[#00ffb3] transition-colors duration-200" href="/sign-up">Sign up</Link>
           <Link className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer hover:bg-[#00ffb3] transition-colors duration-200" href="/login">Login</Link>

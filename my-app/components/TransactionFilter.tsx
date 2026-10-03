@@ -22,7 +22,7 @@ export default function TransactionFilter({ transactions }: TransactionsProp) {
   const filteredTransactions = filter === "All" ? transactions : transactions.filter((value) => value.type === filter)
   return (
     <>
-      <div className="flex gap-4 mt-5 ">
+      <div className="flex flex-wrap gap-4 mt-5">
         <button className={`border p-3 hover:scale-110 transition-transform duration-300 cursor-pointer 
           ${filter === "All" && "bg-neutral-500"}`} onClick={() => { setFilter("All") }}>All</button>
         <button className={`border p-3 hover:scale-110 transition-transform duration-300 cursor-pointer 

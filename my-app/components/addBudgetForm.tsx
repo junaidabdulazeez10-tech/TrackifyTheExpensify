@@ -39,8 +39,8 @@ export default function AddBudgetForm({ category, hasAmount }: { category: strin
       </button>
 
       {showForm &&
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70">
-          <form className="w-[320px] p-8 rounded-2xl  bg-white/10 backdrop-blur-xl border border-white/20  shadow-2xl flex flex-col gap-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 p-4">
+          <form className="w-full max-w-[320px] p-5 sm:p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col gap-4">
             <h1 className="text-white text-2xl font-semibold text-center">
               Assign Budgets
             </h1>

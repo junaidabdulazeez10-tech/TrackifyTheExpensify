@@ -30,12 +30,9 @@ export default async function Dashboard() {
   const balance = income - expense;
 
 
-
-
-
   return (
-    <div className="mr-5 ml-5">
-      <div className="flex justify-between gap-10">
+    <div className="mx-3 sm:mx-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10">
         <div className="border rounded w-full p-5 hover:scale-105 transition-transform duration-300">
           <p>Total Balance</p>
           <p className="text-2xl">{formatCurrency(balance)}</p>
@@ -57,31 +54,31 @@ export default async function Dashboard() {
           <p>{thisMonthAndYear}</p>
         </div>
       </div>
-      <div className="flex gap-10 mt-6">
-        <div className="border flex-2 p-5 hover:scale-102 transition-transform duration-300 ">
+      <div className="flex flex-col xl:flex-row gap-5 lg:gap-10 mt-6">
+        <div className="border xl:flex-2 p-5 hover:scale-102 transition-transform duration-300 overflow-hidden">
           {transactions.length === 0 ?
-            <p className="text-4xl mt-10">No data available yet.</p>
+            <p className="text-xl sm:text-2xl lg:text-4xl mt-10">No data available yet.</p>
             : (
               <>
                 <p className="text-2xl">Income vs Expenses</p>
-                <div className="flex justify-center"><BarsChart transactions={transactions} /></div>
+                <div className="w-full"><BarsChart transactions={transactions} /></div>
               </>
             )}
         </div>
-        <div className="border flex-1 p-5 hover:scale-102 transition-transform duration-300 ">
+        <div className="border xl:flex-1 p-5 hover:scale-102 transition-transform duration-300 overflow-hidden">
           {expenseFromThisMonth === 0
-            ? <p className=" text-4xl mt-10">No expense data for {thisMonthAndYear}.</p>
+            ? <p className="text-xl sm:text-2xl lg:text-4xl mt-10">No expense data for {thisMonthAndYear}.</p>
             :
             <>
               <p className="text-2xl">By Category</p>
-              <div className="flex justify-center"><PiesChart transactions={transactions} /></div>
+              <div className="w-full"><PiesChart transactions={transactions} /></div>
             </>
           }
         </div>
       </div>
 
       {transactions.length === 0 ? (
-        <p className="text-center text-4xl mt-10">No transactions yet. Add your first transaction to get started.</p>
+        <p className="text-xl sm:text-2xl lg:text-4xl mt-10 text-center">No transactions yet. Add your first transaction to get started.</p>
       ) : (
         <div className="border mt-10 p-5 hover:scale-101 transition-transform duration-300">
           <div className="text-2xl">Recent Transactions</div>

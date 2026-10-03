@@ -17,31 +17,39 @@ export default function AnimatedBackground() {
   const darkOptions = {
     particles: {
       number: {
-        value: 100
+        value: 100,
       },
+
+      shape: {
+        type: "star",
+      },
+
       color: {
         value: "#ffffff",
       },
+
       size: {
         value: {
-          min: 1,
-          max: 3,
+          min: 0.3,
+          max: 2,
         },
       },
+
       opacity: {
         value: {
-          min: 0.1,
+          min: 0.2,
           max: 1,
         },
+        animation: {
+          enable: true,
+          speed: 1,
+          sync: false,
+        },
       },
-      animation: {
-        enable: true,
-        speed: 4,
-        sync: false,
-      },
+
       move: {
         enable: true,
-        speed: 0.15,
+        speed: 1,
       },
     }
   };
@@ -49,54 +57,61 @@ export default function AnimatedBackground() {
   const lightOptions = {
     particles: {
       number: {
-        value: 40,
-      },
-
-      shape: {
-        type: "square",
+        value: 60,
       },
 
       paint: {
         color: {
-          value: ["#00ffcc", "#2bff00", "#3b82f6", "#00fff2", "#a6ff00", "#ff006a", "#ffd900", "#ea00ff8e"],
+          value: ["#00ffb3", "#ff036c", "#00c4ff", "#ff00c4", "#c400ff", "#ffb300", "#b3ff00", "#00b3ff"],
         },
       },
 
       size: {
         value: {
-          min: 5,
-          max: 15,
+          min: 3,
+          max: 8,
         },
       },
 
       opacity: {
         value: {
-          min: 0.3,
-          max: 0.7,
+          min: 0.1,
+          max: 0.3,
         },
       },
 
       move: {
         enable: true,
-        speed: 0.5,
+        speed: 2,
       },
     },
   };
 
-
   return (
-    <div
-      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-neutral-300"
-        }`}
-    >
 
-      <ParticlesProvider init={initParticles}>
-        <Particles
-          id="tsparticles"
-          className="absolute inset-0"
-          options={theme === "dark" ? darkOptions : lightOptions}
-        />
-      </ParticlesProvider>
+    <div
+      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-gradient-to-br from-slate-50 via-cyan-50 to-emerald-50"}`}>
+
+      {theme === "dark" && (
+        <ParticlesProvider init={initParticles}>
+          <Particles
+            id="tsparticles"
+            className="absolute inset-0"
+            options={darkOptions}
+          />
+        </ParticlesProvider>
+      )}
+
+      {theme === "light" && (
+        <ParticlesProvider init={initParticles}>
+          <Particles
+            id="tsparticles"
+            className="absolute inset-0"
+            options={lightOptions}
+          />
+        </ParticlesProvider>
+      )}
+
 
     </div>
   )

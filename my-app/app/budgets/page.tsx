@@ -55,20 +55,20 @@ export default async function Budgets() {
 
 
   return (
-    <div className="mr-5 ml-5">
+    <div className="mx-3 sm:mx-5">
       <div className="border rounded p-5">
         <p>Monthly Budget</p>
-        <div className="grid grid-cols-3 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
           <div>
-            <span className="text-4xl font-semibold">{formatCurrency(monthlySpending)}</span>/
-            <span className="text-2xl">{formatCurrency(monthlyBudget?.amount ?? 0)}</span>
+            <span className="text-2xl sm:text-3xl lg:text-4xl font-semibold">{formatCurrency(monthlySpending)}</span>/
+            <span className="text-lg sm:text-xl lg:text-2xl">{formatCurrency(monthlyBudget?.amount ?? 0)}</span>
           </div>
 
-          <div className="flex justify-center self-start">
+          <div className="flex justify-start md:justify-center self-start">
             <AddBudgetForm category="Monthly Budget" hasAmount={monthlyBudget?.amount} />
           </div>
 
-          <div className="flex flex-col text-right">
+          <div className="flex flex-col text-left md:text-right">
             <div className="font-semibold">{!monthlyBudget ? "No Budget Set" : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default async function Budgets() {
         <p>{!monthlyBudget ? "No Budget Set" : `${percentage}% of budget used`}</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-10 mt-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10 mt-5">
         {Object.entries(categoryIcons).map(([category, Icon], index) => {
 
           const budgets = allBudgets.find((v) => v.category === category)
@@ -92,7 +92,7 @@ export default async function Budgets() {
           const remaining = calculateRemaining(budgets?.amount ?? 0, monthlyCategorySpending)
 
           return (
-            <div key={category} className={`border p-5 col-span-2 ${index === Object.entries(categoryIcons).length - 1 ? "col-start-2" : ""}`}>
+            <div key={category} className="border p-5">
               <div className="flex gap-1">
                 <Icon color={COLORS[index % COLORS.length]} />
                 <span>{category}</span>
@@ -103,7 +103,7 @@ export default async function Budgets() {
                   style={{ width: `${Math.min(percentage, 100)}%`, backgroundColor: COLORS[index % COLORS.length] }}
                 />
               </div>
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>Spent: {formatCurrency(monthlyCategorySpending)}</div>
                 <AddBudgetForm category={category} hasAmount={budgets?.amount} />
                 <div className="font-semibold">{!budgets ? "No Budget Set"

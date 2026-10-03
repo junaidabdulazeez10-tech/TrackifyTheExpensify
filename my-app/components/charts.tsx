@@ -1,5 +1,5 @@
 "use client"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, PieSectorShapeProps, Sector, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, PieSectorShapeProps, Sector, Legend, ResponsiveContainer } from "recharts";
 
 const COLORS = [
   "#ff00008e",
@@ -56,19 +56,26 @@ export function BarsChart(transactions: TransactionsProp) {
 
 
   return (
-    <BarChart width={1000} height={400} data={data}>
-      <CartesianGrid />
-      <XAxis dataKey="month" />
-      <YAxis />
-      <Tooltip cursor={{ fill: "#272727" }} contentStyle={{
-        backgroundColor: "#1f1f1f",
-        border: "none",
-        borderRadius: "8px",
-      }} />
-      <Bar dataKey="income" fill="#00ffb3" barSize={50} />
-      <Bar dataKey="expense" fill="#ff036c" barSize={50} />
-      <Legend align="left" iconType="circle" />
-    </BarChart>
+    <div className="w-full h-[300px] sm:h-[350px] lg:h-[400px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data}>
+          <CartesianGrid />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip
+            cursor={{ fill: "#272727" }}
+            contentStyle={{
+              backgroundColor: "#1f1f1f",
+              border: "none",
+              borderRadius: "8px",
+            }}
+          />
+          <Bar dataKey="income" fill="#00ffb3" barSize={50} />
+          <Bar dataKey="expense" fill="#ff036c" barSize={50} />
+          <Legend align="left" iconType="circle" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
@@ -113,23 +120,30 @@ export function PiesChart(transactions: TransactionsProp) {
 
 
   return (
-    <div>
-      <PieChart width={700} height={300}>
-        <Tooltip cursor={{ fill: "#272727" }} contentStyle={{
-          backgroundColor: "#1f1f1f",
-          border: "none",
-          borderRadius: "8px",
-        }} />
+    <div className="w-full">
+      <div className="w-full h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Tooltip
+              cursor={{ fill: "#272727" }}
+              contentStyle={{
+                backgroundColor: "#1f1f1f",
+                border: "none",
+                borderRadius: "8px",
+              }}
+            />
 
-        <Pie
-          data={data}
-          dataKey="amount"
-          nameKey="category"
-          innerRadius={60}
-          outerRadius={100}
-          shape={CustomPieShape}
-        />
-      </PieChart>
+            <Pie
+              data={data}
+              dataKey="amount"
+              nameKey="category"
+              innerRadius={60}
+              outerRadius={100}
+              shape={CustomPieShape}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
         {data.map((item, index) => (
