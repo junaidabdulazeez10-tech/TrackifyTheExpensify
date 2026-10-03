@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+.snowflake {
+  position: absolute;
+  top: -30px;
+  color: #64748b;
+  opacity: 0.7;
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes snowfall {
+  from {
+    transform: translateY(-30px) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}

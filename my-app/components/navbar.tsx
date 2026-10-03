@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react"
 import AddTransactionForm from "./addTransactionForm";
 import { useThemeContext } from "@/context/theme-context";
-import { Moon, Sun, Menu, X } from "lucide-react"
+import { Star, Snowflake, Menu, X } from "lucide-react"
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -52,7 +52,7 @@ export default function Navbar() {
                 setTheme(prev => prev === "light" ? "dark" : "light")
               }
             >
-              {theme === "light" ? <Moon /> : <Sun />}
+              {theme === "light" ? <Star /> : <Snowflake />}
             </button>
 
             <button
@@ -125,7 +125,7 @@ export default function Navbar() {
           <Link className="hover:scale-110 transition-transform duration-300 border p-2" href="/transactions">Transactions</Link>
           <Link className="hover:scale-110 transition-transform duration-300 border p-2" href="/budgets">Budgets</Link>
           <Link className="hover:scale-110 transition-transform duration-300 border p-2" href="/dashboard">Dashboard</Link>
-          <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Moon size={35} /> : <Sun size={35} />}</button>
+          <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Star size={35} /> : <Snowflake size={35} />}</button>
         </div>
         <Link href="/" className="text-3xl xl:text-4xl 2xl:text-5xl text-center whitespace-nowrap hover:scale-105 transition-transform duration-300">
           {capitalizedName + "ify's"}TrackifyTheExpensify
@@ -138,7 +138,7 @@ export default function Navbar() {
         <div className="flex items-center gap-20 mr-auto">
           <Link className="hover:scale-110 transition-transform duration-300 border p-3" href="/">Home</Link>
           <Link className="hover:scale-110 transition-transform duration-300 border p-3" href="/demo">Demo</Link>
-          <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Moon size={35} /> : <Sun size={35} />}</button>
+          <button className="border p-2 hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => { setTheme(prev => prev === "light" ? "dark" : "light") }} >{theme === "light" ? <Star size={35} /> : <Snowflake size={35} />}</button>
         </div>
         <Link href="/" className="text-4xl xl:text-5xl 2xl:text-6xl text-center whitespace-nowrap hover:scale-105 transition-transform duration-300">
           TrackifyTheExpensify

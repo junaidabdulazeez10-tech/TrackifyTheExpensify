@@ -4,6 +4,7 @@ import { Engine } from "@tsparticles/engine";
 import Particles, { ParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useThemeContext } from "@/context/theme-context";
+import SnowBackground from "./snowBackground";
 
 export default function AnimatedBackground() {
 
@@ -57,32 +58,48 @@ export default function AnimatedBackground() {
   const lightOptions = {
     particles: {
       number: {
-        value: 60,
+        value: 100,
+      },
+
+      shape: {
+        type: "char",
+        options: {
+          char: {
+            value: ["❄", "❅", "❆"],
+            font: "Arial",
+            style: "",
+            weight: "400",
+          },
+        },
       },
 
       paint: {
         color: {
-          value: ["#00ffb3", "#ff036c", "#00c4ff", "#ff00c4", "#c400ff", "#ffb300", "#b3ff00", "#00b3ff"],
+          value: ["#64748b", "#94a3b8", "#cbd5e1"],
         },
       },
 
       size: {
         value: {
-          min: 3,
-          max: 8,
+          min: 2,
+          max: 6,
         },
       },
 
       opacity: {
         value: {
-          min: 0.1,
-          max: 0.3,
+          min: 0.4,
+          max: 0.9,
         },
       },
 
       move: {
         enable: true,
-        speed: 2,
+        direction: "bottom" as const,
+        speed: {
+          min: 0.5,
+          max: 2,
+        },
       },
     },
   };
@@ -90,7 +107,7 @@ export default function AnimatedBackground() {
   return (
 
     <div
-      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-gradient-to-br from-slate-50 via-cyan-50 to-emerald-50"}`}>
+      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-[#eef0f2]"}`}>
 
       {theme === "dark" && (
         <ParticlesProvider init={initParticles}>
@@ -102,15 +119,7 @@ export default function AnimatedBackground() {
         </ParticlesProvider>
       )}
 
-      {theme === "light" && (
-        <ParticlesProvider init={initParticles}>
-          <Particles
-            id="tsparticles"
-            className="absolute inset-0"
-            options={lightOptions}
-          />
-        </ParticlesProvider>
-      )}
+      {theme === "light" && <SnowBackground />}
 
 
     </div>
