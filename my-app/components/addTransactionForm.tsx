@@ -38,13 +38,13 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <form className="w-full max-w-[320px] p-5 sm:p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col gap-4">
+      <form className="w-full max-w-[320px] p-5 sm:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col gap-4">
         <h1 className="text-white text-2xl font-semibold text-center">
           Add Transaction
         </h1>
         <div className="flex justify-center gap-8">
-          <button type="button" className={`p-3 rounded-lg ${type === "Income" ? "bg-green-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Income"); setCategory("Income"), setError("") }}>Income</button>
-          <button type="button" className={`p-3 rounded-lg ${type === "Expense" ? "bg-red-500 text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Expense"); setCategory(""), setError("") }}>Expense</button>
+          <button type="button" className={`p-3 rounded-lg ${type === "Income" ? "bg-[#00ffb3] text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Income"); setCategory("Income"), setError("") }}>Income</button>
+          <button type="button" className={`p-3 rounded-lg ${type === "Expense" ? "bg-[#ff036c] text-white" : "bg-white/20 text-white"}  hover:opacity-70 `} onClick={() => { setType("Expense"); setCategory(""), setError("") }}>Expense</button>
         </div>
         <input placeholder="description" value={description} onChange={(e) => setDescription(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
         <input placeholder="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70" />
@@ -60,10 +60,10 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
             <option className="p-3 rounded-lg bg-black/70 text-white" value="Others">Others</option>
           </select>
         )}
-        <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-green-500 text-white hover:bg-green-900 transition-colors duration-200">
+        <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-[#00ffb3] text-white hover:opacity-50 duration-200">
           Send
         </button>
-        <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-red-500 text-white hover:bg-red-900 transition-colors duration-200">
+        <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-[#ff036c] text-white hover:opacity-50 duration-200">
           Close
         </button>
         {error && <p className="text-[#ff036c] text-center">{error}</p>}

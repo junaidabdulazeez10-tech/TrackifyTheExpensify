@@ -191,10 +191,9 @@ export default function DemoPage() {
   return (
     <>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 p-5">
-        <button onClick={() => { setPage("dashboard") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "dashboard" && "bg-[#00ffb3]"}`}>Dashboard Page Overview</button>
-        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "transactions" &&
-          "bg-[#00ffb3]"}`}>Transactions Page Overview</button>
-        <button onClick={() => { setPage("budget") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "budget" && "bg-[#00ffb3]"}`}>Budget Page Overview</button>
+        <button onClick={() => { setPage("dashboard") }} className={`border rounded text-xl hover:scale-110 transition-transform duration-300 border p-3 cursor-pointer `}>Dashboard Page Overview</button>
+        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl hover:scale-110 transition-transform duration-300 border p-3 cursor-pointer `}>Transactions Page Overview</button>
+        <button onClick={() => { setPage("budget") }} className={`border rounded text-xl hover:scale-110 transition-transform duration-300 border p-3 cursor-pointer `}>Budget Page Overview</button>
       </div>
 
       {page === "dashboard" && (

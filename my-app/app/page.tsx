@@ -29,13 +29,13 @@ export default async function Home() {
         decisions and achieve your financial goals.
       </div>
       <div className="text-center mt-10 text-2xl">
-        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#bbff008f] transition-colors duration-200" href="/demo">Get Started With The Demo Here!</Link>
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer duration-200" href="/demo">Get Started With The Demo Here!</Link>
       </div>
       <div className="text-center mt-10 text-2xl">
-        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#00ffb38f] transition-colors duration-200" href="/sign-up">Sign Up Here!</Link>
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer duration-200" href="/sign-up">Sign Up Here!</Link>
       </div>
       <div className="text-center mt-10 text-2xl">
-        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer hover:bg-[#00ffb3] transition-colors duration-200" href="/login">Already have an Account, Then Login Here!</Link>
+        <Link className="border p-5 inline-block hover:scale-120 transition-transform cursor-pointer duration-200" href="/login">Already have an Account, Then Login Here!</Link>
       </div>
     </div>
 
