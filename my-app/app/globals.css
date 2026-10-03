@@ -3,8 +3,9 @@
 .snowflake {
   position: absolute;
   top: -30px;
-  color: #64748b;
-  opacity: 0.7;
+  color: rgb(57, 90, 117);
+  font-family: Arial, sans-serif;
+  opacity: 0.75;
   animation-name: snowfall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;

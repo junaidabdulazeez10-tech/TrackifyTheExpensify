@@ -107,7 +107,7 @@ export default function AnimatedBackground() {
   return (
 
     <div
-      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-[#eef0f2]"}`}>
+      className={`fixed inset-0 z-0 pointer-events-none ${theme === "dark" ? "bg-black" : "bg-[#cfd1d3]"}`}>
 
       {theme === "dark" && (
         <ParticlesProvider init={initParticles}>
