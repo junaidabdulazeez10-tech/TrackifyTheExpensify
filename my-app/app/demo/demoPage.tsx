@@ -192,7 +192,7 @@ export default function DemoPage() {
     <>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 p-5">
         <button onClick={() => { setPage("dashboard") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "dashboard" && "bg-[#00ffb3]"}`}>Dashboard Page Overview</button>
-        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "transactions" && 
+        <button onClick={() => { setPage("transactions") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "transactions" &&
           "bg-[#00ffb3]"}`}>Transactions Page Overview</button>
         <button onClick={() => { setPage("budget") }} className={`border rounded text-xl p-2 hover:opacity-75 transition-colors duration-300 ${page === "budget" && "bg-[#00ffb3]"}`}>Budget Page Overview</button>
       </div>
@@ -224,11 +224,13 @@ export default function DemoPage() {
               </div>
             </div>
             <div className="flex flex-col xl:flex-row gap-5 lg:gap-10 mt-6">
-              <div className="border xl:flex-2 p-5 hover:scale-102 transition-transform duration-300 ">
+              <div className="border xl:flex-2 min-w-0 p-5 hover:scale-102 transition-transform duration-300">
                 <p className="text-2xl">Income vs Expenses</p>
-                <div className="w-full"><BarsChart transactions={transactions} /></div>
+                <div className="w-full">
+                  <BarsChart transactions={transactions} />
+                </div>
               </div>
-              <div className="border xl:flex-1 p-5 hover:scale-102 transition-transform duration-300 ">
+              <div className="border xl:flex-1 min-w-0 p-5 hover:scale-102 transition-transform duration-300">
                 <p className="text-2xl">By Category</p>
                 <div className="w-full"><PiesChart transactions={transactions} /></div>
               </div>
