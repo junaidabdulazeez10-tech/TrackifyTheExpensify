@@ -187,3 +187,7 @@ During the project, I worked with:
 TrackifyTheExpensify is deployed on Vercel, with the PostgreSQL database hosted on Neon.
 
 **Production:** https://trackify-the-expensify.vercel.app
+
+## Author
+
+**Junaid Imad Abdulazeez Almohammadi**
