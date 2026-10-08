@@ -24,10 +24,19 @@ export default async function Budgets() {
   const thisMonthAndYear = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
   const monthlySpending = calculateMonthlyTotalByType(transactions, "Expense", thisMonthAndYear)
-  const monthlyBudget = allBudgets.find((v) => v.category === "Monthly Budget")
+  const monthlyBudget = allBudgets.reduce((sum, budget) => {
+    return sum + budget.amount;
+  }, 0);
 
-  const percentage = calculatePercentage(monthlySpending, monthlyBudget?.amount ?? 0);
-  const remaining = calculateRemaining(monthlyBudget?.amount ?? 0, monthlySpending)
+  const percentage = calculatePercentage(
+    monthlySpending,
+    monthlyBudget
+  );
+
+  const remaining = calculateRemaining(
+    monthlyBudget,
+    monthlySpending
+  );
 
 
 
@@ -58,19 +67,12 @@ export default async function Budgets() {
     <div className="mx-3 sm:mx-5">
       <div className="border rounded p-5">
         <p>Monthly Budget</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+        <div className="flex flex-wrap justify-between items-center ">
           <div>
             <span className="text-2xl sm:text-3xl lg:text-4xl font-semibold">{formatCurrency(monthlySpending)}</span>/
-            <span className="text-lg sm:text-xl lg:text-2xl">{formatCurrency(monthlyBudget?.amount ?? 0)}</span>
+            <span className="text-lg sm:text-xl lg:text-2xl">{formatCurrency(monthlyBudget)}</span>
           </div>
-
-          <div className="flex justify-start md:justify-center self-start">
-            <AddBudgetForm category="Monthly Budget" hasAmount={monthlyBudget?.amount} />
-          </div>
-
-          <div className="flex flex-col text-left md:text-right">
-            <div className="font-semibold">{!monthlyBudget ? "No Budget Set" : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
-          </div>
+          <div className="font-semibold">{monthlyBudget === 0 ? "No Budgets Set" : remaining < 0 ? formatCurrency(Math.abs(remaining)) + " Over budget" : "Remaining: " + formatCurrency(remaining)}</div>
         </div>
         <div className="w-full bg-gray-400 rounded-full h-3 mt-2 mb-2">
           <div
@@ -78,7 +80,7 @@ export default async function Budgets() {
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
-        <p>{!monthlyBudget ? "No Budget Set" : `${percentage}% of budget used`}</p>
+        <p>{monthlyBudget === 0 ? "No Budgets Set" : `${percentage}% of budget used`}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10 mt-5">
