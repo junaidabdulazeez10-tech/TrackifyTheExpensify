@@ -2,11 +2,13 @@
 import { createOrUpdateBudget } from "@/serverActions/budget"
 import { Plus } from "lucide-react"
 import { useState } from "react"
+import { LoaderCircle } from "lucide-react";
 
 export default function AddBudgetForm({ category, hasAmount }: { category: string, hasAmount: number | undefined }) {
   const [showForm, setShowForm] = useState(false)
   const [amount, setAmount] = useState(hasAmount === undefined ? "" : String(hasAmount))
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit() {
 
@@ -20,6 +22,7 @@ export default function AddBudgetForm({ category, hasAmount }: { category: strin
     }
 
     try {
+      setLoading(true)
       await createOrUpdateBudget({ amount: Number(amount), category })
       setShowForm(false)
     } catch (error) {
@@ -28,6 +31,8 @@ export default function AddBudgetForm({ category, hasAmount }: { category: strin
       } else {
         setError("Something went wrong.");
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -46,7 +51,11 @@ export default function AddBudgetForm({ category, hasAmount }: { category: strin
             </h1>
             <input placeholder="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="p-3 rounded-lg bg-white/20 text-white hover:opacity-70 transition-opacity duration-200" />
             <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-[#00ffb3] text-white hover:opacity-50 duration-200">
-              Send
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <LoaderCircle className="h-5 w-5 animate-spin" />
+                  Creating Budget...
+                </span>) : ("Send")}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="p-3 rounded-lg bg-[#ff036c] text-white hover:opacity-50 duration-200">
               Close

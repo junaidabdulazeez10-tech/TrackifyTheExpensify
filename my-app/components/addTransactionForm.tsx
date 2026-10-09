@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { createTransaction } from "../serverActions/transaction";
 import { TransactionType } from "@prisma/client";
+import { LoaderCircle } from "lucide-react";
 
 type AddTransactionFormProps = {
   setOpen: (value: boolean) => void;
@@ -13,7 +14,7 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
   const [category, setCategory] = useState("")
   const [description, setDescription] = useState("")
   const [error, setError] = useState("")
-
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit() {
     setError("")
@@ -25,6 +26,7 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
       return;
     }
     try {
+      setLoading(true)
       await createTransaction({ amount: Number(amount), category, description, type })
       setOpen(false)
     } catch (error) {
@@ -33,6 +35,8 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
       } else {
         setError("Something went wrong.");
       }
+    } finally{
+      setLoading(false)
     }
   }
 
@@ -61,7 +65,11 @@ export default function AddTransactionForm({ setOpen }: AddTransactionFormProps)
           </select>
         )}
         <button type="button" onClick={handleSubmit} className="p-3 rounded-lg bg-[#00ffb3] text-white hover:opacity-50 duration-200">
-          Send
+           {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <LoaderCircle className="h-5 w-5 animate-spin" />
+                  Creating Transaction...
+                </span>) : ("Send")}
         </button>
         <button type="button" onClick={() => setOpen(false)} className="p-3 rounded-lg bg-[#ff036c] text-white hover:opacity-50 duration-200">
           Close

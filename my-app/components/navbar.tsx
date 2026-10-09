@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react"
 import AddTransactionForm from "./addTransactionForm";
 import { useThemeContext } from "@/context/theme-context";
-import { Star, Snowflake, Menu, X } from "lucide-react"
+import { Star, Snowflake, Menu, X, LoaderCircle } from "lucide-react"
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -12,6 +12,7 @@ export default function Navbar() {
 
   const [open, setOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const { setTheme, theme } = useThemeContext()
 
@@ -19,15 +20,22 @@ export default function Navbar() {
 
   async function handleLogout() {
 
-    const { error } = await authClient.signOut();
+    try {
+      setLoading(true)
+      const { error } = await authClient.signOut();
 
-    if (error) {
-      alert(`Error logging out: ${error.message}`);
-      return;
+      if (error) {
+        alert(`Error logging out: ${error.message}`);
+        return;
+      }
+      router.push("/");
+    } finally {
+      setLoading(false)
     }
 
-    router.push("/");
   }
+
+
 
   const { data: session } = authClient.useSession();
 
@@ -36,6 +44,7 @@ export default function Navbar() {
   const capitalizedName = name
     ? name.charAt(0).toUpperCase() + name.slice(1)
     : "";
+
 
   return (
     <>
@@ -93,7 +102,11 @@ export default function Navbar() {
                   className="border p-2 text-left"
                   onClick={handleLogout}
                 >
-                  Logout
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <LoaderCircle className="h-5 w-5 animate-spin" />
+                      Logging out...
+                    </span>) : ("Logout")}
                 </button>
               </>
             ) : (
@@ -136,7 +149,11 @@ export default function Navbar() {
           <button
             className="border p-1 xl:p-2 hover:scale-110 transition-transform duration-300 cursor-pointer hover:bg-[#ff036c]"
             onClick={handleLogout}>
-            Logout
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <LoaderCircle className="h-5 w-5 animate-spin" />
+                Logging out...
+              </span>) : ("Logout")}
           </button>
         </div>
       </div>) : (<div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center gap-3 xl:gap-6 p-4 xl:p-6 2xl:p-8 text-sm xl:text-base 2xl:text-xl">
